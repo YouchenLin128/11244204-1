@@ -1,0 +1,117 @@
+/* 通用設置 */
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: "Noto Serif TC", "Times New Roman", serif; /* 日式風格字體 */
+    background-color: #f9f6f2; /* 柔和米色背景 */
+    color: #5e4f45; /* 中灰棕色文字 */
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 頁頭樣式 */
+header {
+    background-color: #d9c3a5; /* 淺米色背景 */
+    color: #5e4f45; /* 深棕色文字 */
+    padding: 20px;
+    text-align: center;
+    font-family: "Noto Serif TC", serif; /* 優雅的日文字體 */
+    position: fixed; /* 固定頁頭 */
+    top: 0; /* 固定在頁面頂部 */
+    left: 0;
+    width: 100%; /* 使背景色延伸至頁面寬度 */
+    z-index: 1001; /* 設定較高的 z-index，讓頁頭在通知區上方 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 加點陰影讓頁頭更明顯 */
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+    letter-spacing: 2px; /* 增加字距，增加典雅感 */
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline-block;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: #5e4f45; /* 深棕色 */
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: #fffae166; /* 高透明度淡黃色 */
+    border-radius: 10%;
+    margin-left: auto;
+}
+
+/* 主內容區域 */
+main {
+    flex: 1;
+    padding-top: 120px; /* 避免內容被固定頁頭擋住 */
+}
+
+/* 品牌理念區塊 */
+.brand-vision {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+.brand-vision p {
+    margin-bottom: 10px; /* 縮短文字與圖片的間距 */
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+/* 甜點美圖區塊 */
+.photo-gallery {
+    text-align: center;
+    padding: 0; /* 移除內部上下空白 */
+    margin: 0 auto; /* 確保區塊居中 */
+}
+
+.photo-gallery h2 {
+    display: none; /* 隱藏區塊標題，直接與品牌理念結合 */
+}
+
+.photos {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* 縮小圖片之間的間距 */
+    margin-top: 10px; /* 控制圖片與文字間距 */
+}
+
+.photos img {
+    max-width: 300px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+}
+
+/* 頁腳樣式 */
+footer {
+    background-color: #d9c3a5;
+    color: #5e4f45;
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+}

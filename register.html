@@ -1,0 +1,64 @@
+<!DOCTYPE html><!-- 註冊頁面 -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員註冊</title>
+    <link rel="stylesheet" href="lin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+    <script src="lin.js" defer></script> 
+    <style>
+        body{text-align: center;
+            background-color: #f3e8d6;
+            margin: 0;
+        }
+        a {
+    text-decoration: none;
+    color: inherit;
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🌙月見甜舖</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">首頁</a></li>
+                <li><a href="about.html">關於我們</a></li>
+                <li><a href="register.html">會員註冊</a></li>
+                <li><a href="enter.html">會員登入</a></li>
+                <li><a href="account.html">會員中心</a></li>
+                <li><a href="shoppingcart.html">購物車</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <h1 >會員註冊</h1>
+    <form id="registration-form" onsubmit="showSuccessMessage(); return false;">
+    姓名:<input type="text" id="realname" name="realname" placeholder="請輸入真實中文姓名"><br><br>
+    Email:<input type="email" id="Email" name="Email" placeholder="請輸入Email"><br><br>
+    生日:<label for="birthday"></label>
+    <input type="date" id="birthday" name="birthday" required><br><br>
+    請設定密碼:<input type="password" id="password1" name="password1" placeholder="請輸入密碼"><br><br>
+    確認密碼:<input type="password" id="password2" name="password2" placeholder="請再一次輸入密碼"><br><br>
+    <button type="submit">立即註冊</button><br>
+    </form>
+    <script>
+       function showSuccessMessage() {
+            document.getElementById("registration-form").style.display = "none";
+            document.getElementById("success-message").style.display = "block";
+            setTimeout(function() {
+                window.location.href = "index.html";
+            }, 1000);
+        }
+        
+    </script>
+    <div id="success-message" style="display: none;">
+        <p style="color: green;text-align: center;">註冊成功</p>
+    </div>
+    <footer>
+         <p>© 2024 月見甜鋪 | 甜點讓生活更美好</p>
+         <p>聯絡我們：<a href="mailto:contact@mooncakeshop.com">contact@mooncakeshop.com</a></p>
+     </footer>
+</body>
+</html>

@@ -1,0 +1,304 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: "Noto Serif TC", "Times New Roman", serif; /* 日式風格字體 */
+    background-color: #f9f6f2; /* 柔和米色背景 */
+    color: #5e4f45; /* 中灰棕色文字 */
+    padding-top: 50px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    padding-top: 3.5%; /* 推播廣告的高度 */
+}
+
+main {
+    flex: 1;
+}
+
+/* 推播式廣告區塊 */
+.ad-banner {
+    background-color: #fffae1; /* 淡黃色背景 */
+    padding: 5px;  /* 減少內邊距 */
+    text-align: center;
+    font-size: 16px;  /* 減少文字大小 */
+    color: #5e4f45;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    width: 100%;
+    height: 4%; /* 減少高度 */
+    top: 0;
+    left: 0;
+    z-index: 1002; /* 設定較高的 z-index，讓跑馬燈在頁頭之上 */
+    white-space: nowrap;
+    overflow: hidden;
+
+    /* 置中 */
+    align-items: center;
+    justify-content: center;
+    position: fixed; /* 固定在頁面最上方 */
+}
+
+/* 設置跑馬燈效果 */
+.ad-banner p {
+    display: inline-block;
+    animation: marquee 18s linear infinite; /* 跑馬燈動畫 */
+}
+
+/* 設置跑馬燈效果 */
+@keyframes marquee {
+    0% {
+        transform: translateX(100%); /* 開始時從右邊出現 */
+    }
+    100% {
+        transform: translateX(-100%); /* 結束時完全滾動出畫面 */
+    }
+}
+
+/* 頁頭樣式 */
+header {
+    background-color: #d9c3a5; /* 淡柔和的咖啡色背景 */
+    color: #5e4f45; /* 深棕色文字 */
+    padding: 20px;
+    text-align: center;
+    font-family: "Noto Serif TC", serif; /* 優雅的日文字體 */
+    margin-top: 0; /* 去除預設的上邊距 */
+    position: fixed; /* 固定頁頭 */
+    top: 4%; /* 讓頁頭下移，避免被跑馬燈覆蓋 */
+    left: 0;
+    width: 100%; /* 使背景色延伸至頁面寬度 */
+    
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+    letter-spacing: 2px; /* 增加字距，增加典雅感 */
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline-block;
+    margin: 0 15px;
+}
+nav ul li a {
+    color: #5e4f45; /* 深棕色 */
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: #fffae166; /* 高透明度淡黃色 */
+    border-radius: 10%;
+    margin-left: auto;
+}
+
+/* 圖片區塊 */
+.ad-images {
+    margin-top: 80px; /* 確保圖片區塊位於 header 下方 */
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* 圖片間距 */
+}
+
+.ad-images img {
+    width: 100px; /* 設定圖片寬度統一 */
+    height: 100px; /* 設定統一高度 */
+    object-fit: cover; /* 保持圖片比例並裁切 */
+    border-radius: 8px;
+}
+
+/* 主要內容區域 */
+a {
+    text-decoration: none;
+    color: inherit;}
+.container {
+    display: flex;
+    padding: 20px;
+    margin-top: 80px; /* 保持推播式廣告區塊下方的間距 */
+}
+
+.sidebar {
+    width: 1000px; /* 增加側邊欄寬度至 1000px */
+    margin-right: 20px;
+    background-color: #f3e8d6; /* 柔和淺米色背景 */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 輕微陰影增加質感 */
+}
+
+.sidebar h2 {
+    text-align: center;
+    background-color: #c2a78d; /* 深咖啡色 */
+    padding: 10px;
+    margin: -15px -15px 20px -15px;
+    color: #fff;
+    border-radius: 8px 8px 0 0;
+    font-size: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #5e4f45; /* 中灰棕色 */
+    font-size: 16px;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+    color: #d49c7c; /* 櫻花粉 */
+    padding-left: 5px;
+}
+
+/* 商品瀏覽區域 */
+.product-view {
+    flex-grow: 1;
+    padding: 20px;  /* 增加內邊距 */
+}
+
+.product-view h2 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #5e4f45; /* 中灰棕色 */
+    font-family: "Noto Serif TC", serif;
+}
+
+/* 商品分類名稱置中 */
+.product-view .category-title {
+    text-align: center; /* 文字置中 */
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #5e4f45;
+    font-weight: bold; /* 加粗字體 */
+}
+
+/* 商品網格顯示 */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 一排顯示3個商品 */
+    gap: 20px;
+}
+
+.product {
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #fdfbf7; /* 柔白色背景 */
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.product:hover {
+    transform: translateY(-5px); /* 當鼠標懸停時，商品提升效果 */
+}
+
+/* 商品圖片樣式 */
+.product img {
+    width: 350px;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px; /* 保證圖片不會超過容器的高度 */
+    object-fit: contain; /* 使圖片在容器中保持比例縮放，並填充容器 */
+}
+
+/* 商品名稱和描述 */
+.product p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+/* 頁腳 */
+footer {
+    background-color: #d9c3a5; /* 淡咖啡色 */
+    color: #5e4f45;
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+}
+
+/* 底部廣告輪播區域 */
+.ad-carousel {
+    width: 100%;
+    overflow: hidden;  /* 隱藏超出範圍的圖片 */
+    margin-top: 20px; /* 與其他內容的間距 */
+    position: relative;
+}
+
+/* 包裹所有圖片的容器 */
+.ad-images {
+    display: flex;  /* 讓圖片橫向排列 */
+    width: 300%;  /* 讓所有圖片寬度達到 3 倍 */
+    animation: slide 9s infinite; /* 使用滑動動畫，時間為9秒 */
+}
+
+/* 圖片樣式 */
+.ad-images img {
+    width: 33.33%;  /* 每張圖片占據 33.33% 寬度 */
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* 設置輪播動畫 */
+@keyframes slide {
+    0% {
+        transform: translateX(0); /* 起始位置 */
+    }
+    33.33% {
+        transform: translateX(-100%); /* 滑動至第二張圖片 */
+    }
+    66.66% {
+        transform: translateX(-200%); /* 滑動至第三張圖片 */
+    }
+    100% {
+        transform: translateX(0); /* 回到起始位置 */
+    }
+}
+
+/* 關於我們區塊 */
+.about-us {
+    display: flex;
+    flex-direction: column; /* 垂直排列 */
+    align-items: center; /* 水平方向置中 */
+    justify-content: center; /* 垂直方向置中 */
+    text-align: center; /* 讓文字置中 */
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 800px; /* 可以根據需要調整最大寬度 */
+    background-color: #f3e8d6; /* 背景顏色 */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 輕微陰影 */
+    height: 100%; /* 確保佔滿垂直高度 */
+}
+
+.about-us h2 {
+    font-size: 28px;
+    font-family: "Noto Serif TC", serif;
+    color: #5e4f45;
+    margin-bottom: 15px;
+}
+
+.about-us p {
+    font-size: 18px;
+    color: #5e4f45;
+}
