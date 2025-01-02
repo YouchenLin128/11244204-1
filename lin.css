@@ -1,0 +1,228 @@
+body { 
+    height: 100%; 
+    margin: 0; 
+    background-color:  #f9f6f2; 
+    color: #5e4f45;
+    font-family: "Noto Serif TC", serif;
+    padding-top: 100px;
+} 
+header {
+    background-color: #d9c3a5; /* 淺米色背景 */
+    color: #5e4f45; /* 深棕色文字 */
+    padding: 20px;
+    text-align: center;
+    font-family: "Noto Serif TC", serif; /* 優雅的日文字體 */
+    position: fixed; /* 固定頁頭 */
+    top: 0; /* 固定在頁面頂部 */
+    left: 0;
+    width: 100%; /* 使背景色延伸至頁面寬度 */
+    z-index: 1001; /* 設定較高的 z-index，讓頁頭在通知區上方 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 加點陰影讓頁頭更明顯 */
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+    letter-spacing: 2px; /* 增加字距，增加典雅感 */
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline-block;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: #5e4f45; /* 深棕色 */
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: #fffae166; /* 高透明度淡黃色 */
+    border-radius: 10%;
+    margin-left: auto;
+}
+
+.product-section {
+    gap: 20px; 
+    align-items: center; 
+    margin-bottom: 15px; 
+    border-bottom: 1px solid rgb(176, 163, 163); 
+    padding-bottom: 15px;
+    position: relative;
+    display: flex;
+
+} 
+
+.quantity-container {
+    bottom: 10px; 
+    right: 10px; 
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background-color: #d3c4b8; 
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.quantity-container button {
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.quantity-container input {
+    width: 50px;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px;
+}
+
+.checkbox-container input {
+    appearance: none;
+    width: 20px;
+    height: 20px; 
+    margin-right: 10px;  
+    border: 3px solid #671d1d;
+}
+
+.checkbox-container input:checked {
+    background-color: #5e4f45;
+    border-color: #5e4f45; 
+}
+
+.checkbox-container input:checked::after {
+    content: '✔'; 
+    color: white; 
+    font-size: 15px;
+    position: absolute;
+}
+
+.total-amount1 {
+    text-align: right;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-top: 2px solid #ccc;
+}
+button {
+background-color: #c2a78d; /* 按钮背景色 */
+color: white;
+padding: 10px 15px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 15px;}
+a {
+text-decoration: none;
+color: inherit;}
+.history-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 每行两列 */
+    gap: 20px;
+    padding: 20px;
+}
+.history-item {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.history-item img {
+    width: 100px;
+    height: 100px;
+    margin-right: 15px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+.history-item .info {
+    display: flex;
+    flex-direction: column;
+}
+.history-item .info h3 {
+    margin: 0;
+    font-size: 16px;
+}
+.history-item .info p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #666;
+}
+#title{
+    border: 5px solid #d3c4b8;
+     border-radius: 5px; 
+     display: inline-block;
+      background-color: white;
+      margin-left: 20px;
+}
+footer {
+    background-color: #d9c3a5;
+    color: #5e4f45;
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+}
+
+/* 平板及以下设备 */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 24px; /* 调整标题字体大小 */
+    }
+
+    nav ul li {
+        display: block; /* 垂直排列导航菜单 */
+        margin: 5px 0;
+    }
+
+    .product-section {
+        flex-direction: column; /* 产品项改为垂直布局 */
+        align-items: flex-start;
+    }
+
+    .history-container {
+        grid-template-columns: 1fr; /* 单列布局 */
+    }
+
+    .history-item img {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+/* 手机设备 */
+@media (max-width: 576px) {
+    header {
+        padding: 15px;
+    }
+
+    header h1 {
+        font-size: 20px;
+    }
+
+    .quantity-container input {
+        width: 40px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    .total-amount1 {
+        font-size: 18px;
+        padding: 8px;
+    }
+}

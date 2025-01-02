@@ -1,0 +1,242 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: "Noto Serif TC", "Times New Roman", serif;
+    background-color: #f9f6f2; 
+    color: #5e4f45; 
+}
+body {
+    display: flex;
+    flex-direction: column;
+}
+a {
+    text-decoration: none;
+    color: inherit;}
+
+header {
+    background-color: #d9c3a5; 
+    color: #5e4f45; 
+    padding: 20px;
+    text-align: center;
+    font-family: "Noto Serif TC", serif; 
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    width: 100%; /* 使背景色延伸至頁面寬度 */
+    z-index: 1001; /* 設定較高的 z-index，讓頁頭在通知區上方 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 加點陰影讓頁頭更明顯 */
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+    letter-spacing: 2px; 
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline-block;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: #5e4f45; 
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: #fffae166; 
+    border-radius: 10%;
+    margin-left: auto;
+}
+main {
+    flex: 1;
+    padding-top: 120px;
+}
+
+/* 品牌理念區塊 */
+.brand-vision {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+.brand-vision p {
+    margin-bottom: 10px; /* 縮短文字與圖片的間距 */
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+/* 甜點美圖區塊 */
+.photo-gallery {
+    text-align: center;
+    padding: 0; /* 移除內部上下空白 */
+    margin: 0 auto; /* 確保區塊居中 */
+}
+
+.photo-gallery h2 {
+    display: none; /* 隱藏區塊標題，直接與品牌理念結合 */
+}
+
+.photos {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* 縮小圖片之間的間距 */
+    margin-top: 10px; /* 控制圖片與文字間距 */
+}
+
+.photos img {
+    max-width: 300px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+}
+
+/* 關於我們團隊介紹區塊 */
+.team-introduction {
+    text-align: center;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.team-introduction h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.team-members {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.member {
+    text-align: center;
+    max-width: 300px;
+}
+
+.member img {
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.member h3 {
+    margin: 10px 0;
+    font-size: 20px;
+}
+
+.member p {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #5e4f45;
+}
+
+/* 頁腳樣式 */
+footer {
+    background-color: #d9c3a5;
+    color: #5e4f45;
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+}
+
+
+/* 适配平板设备及以下屏幕宽度 */
+@media (max-width: 768px) {
+    nav ul li {
+        display: block; /* 导航链接垂直排列 */
+        margin: 10px 0;
+    }
+
+    .brand-vision {
+        padding: 15px; /* 减小内边距 */
+        max-width: 95%; /* 减小宽度以适配小屏幕 */
+    }
+
+    .photos {
+        flex-wrap: wrap; /* 图片换行排列 */
+        gap: 5px; /* 减小图片间距 */
+    }
+
+    .photos img {
+        max-width: 45%; /* 调整图片宽度适配 */
+    }
+
+    .team-members {
+        flex-direction: column; /* 团队成员垂直排列 */
+        gap: 15px; /* 调整间距 */
+    }
+
+    .member {
+        max-width: 90%; /* 减小成员卡片宽度 */
+    }
+}
+
+/* 适配手机设备屏幕宽度 */
+@media (max-width: 576px) {
+    header h1 {
+        font-size: 24px; /* 缩小标题字体 */
+    }
+
+    nav ul li a {
+        font-size: 16px; /* 缩小导航链接字体 */
+    }
+
+    .photos img {
+        max-width: 100%; /* 图片占满屏幕宽度 */
+    }
+
+    .team-introduction h2 {
+        font-size: 24px; /* 缩小标题字体 */
+    }
+
+    .team-members {
+        gap: 10px; /* 调整成员卡片间距 */
+    }
+
+    footer {
+        font-size: 12px; /* 缩小页脚字体 */
+    }
+}
+.about-us {
+    display: flex;
+    flex-direction: column; /* 垂直排列 */
+    align-items: center; /* 水平方向置中 */
+    justify-content: center; /* 垂直方向置中 */
+    text-align: center; /* 讓文字置中 */
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 800px; /* 可以根據需要調整最大寬度 */
+    background-color: #f3e8d6; /* 背景顏色 */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 輕微陰影 */
+    height: 100%; /* 確保佔滿垂直高度 */
+}
+
+
+.about-us h2 {
+    font-size: 28px;
+    font-family: "Noto Serif TC", serif;
+    color: #5e4f45;
+    margin-bottom: 15px;
+}
+
+
+.about-us p {
+    font-size: 18px;
+    color: #5e4f45;
+}
