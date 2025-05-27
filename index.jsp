@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!-- Step 0: import library --> 
-<%@ page import = "java.sql.*" %> 
+<%@ page import = "java.sql.*, java.util.*" %> 
 
 <html lang="zh-Hant">
 <head>
@@ -65,7 +65,7 @@
         %>
         <nav>
             <ul>
-                <li><a href="index.html">首頁</a></li>
+                <li><a href="index.jsp">首頁</a></li>
                     <li><a href="about.html">關於我們</a></li>
                     <li><a href="register.html">會員註冊</a></li>
                     <li><a href="enter.html">會員登入</a></li>
@@ -105,10 +105,51 @@
         <aside class="sidebar">
             <h2>甜點分類</h2>
             <ul>
-                <li><a href="sidebar/christmas.html">聖誕節限定甜點</a></li>
-                <li><a href="sidebar/season.html">季節限定甜點</a></li>
-                <li><a href="sidebar/classical.html">經典日式點心</a></li>
-                <li><a href="sidebar/creative.html">創新甜點</a></li>
+                <%!
+                    String[] categoryArray;
+                %>
+                <%
+                    // Step 1: 連接資料庫
+                    Class.forName("com.mysql.jdbc.Driver");
+                    String url = "jdbc:mysql://localhost/shop?serverTimezone=UTC";
+                    Connection con = DriverManager.getConnection(url, "root", "1234");
+                    
+                    if (con.isClosed()) {
+                        out.println("連線建立失敗");
+                    } else {
+
+                        request.setCharacterEncoding("UTF-8");
+
+                        // 宣告 Statement
+                        Statement stmt = con.createStatement();
+
+                        // 第一次查詢資料筆數
+                        ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM category");
+                        rs.next();
+                        int count = rs.getInt(1);
+                        rs.close();
+
+                        // 使用全域變數
+                        categoryArray = new String[count];
+
+                        // 第二次查詢實際資料
+                        rs = stmt.executeQuery("SELECT CategoryName FROM category");
+                        int index = 0;
+                        while (rs.next()) {
+                            categoryArray[index] = rs.getString("categoryName");
+                            index++;
+                        }
+
+                        rs.close();
+                        stmt.close();
+                        con.close();
+                    }
+                %>
+                <li><a href="sidebar/christmas.jsp"><%=categoryArray[0]%></a></li>
+                <li><a href="sidebar/season.jsp"><%=categoryArray[1]%></a></li>
+                <li><a href="sidebar/classical.jsp"><%=categoryArray[2]%></a></li>
+                <li><a href="sidebar/creative.jsp"><%=categoryArray[3]%></a></li>
+
             </ul>
         </aside>
 
