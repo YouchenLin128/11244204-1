@@ -92,52 +92,197 @@
             <h2>經典日式點心</h2>
             <div class="product-grid">
                 <div class="product">
-                    <a href="../products/wagashi.html">
+                    <a href="../products/wagashi.jsp">
                         <img src="picture1/和菓子.jpg" alt="和菓子">
-                        <p>和菓子</p>
-                        <p>價格: NT$150</p>
+                        <%!
+                            String productName = "";
+                            String productPrice = "";
+                        %>
+
+                        <%
+                            // Step 1: 連接資料庫
+                            Class.forName("com.mysql.jdbc.Driver");
+                            url = "jdbc:mysql://localhost/shop?serverTimezone=UTC";
+                            con = DriverManager.getConnection(url, "root", "1234");
+                            if (con.isClosed()) {
+                                out.println("連線建立失敗");
+                            } else {
+                                request.setCharacterEncoding("UTF-8");
+                                String item = "SELECT * FROM product WHERE ProductName = '和菓子'";
+                                ResultSet gs = con.createStatement().executeQuery(item);
+
+                                if(gs.next()) {
+                                    productName = gs.getString("ProductName");
+                                    productPrice = gs.getString("Price");
+                                }
+                                gs.close();
+                                con.close();
+                            }
+                        %>
+                        <p><%=productName%></p>
+                        <p>價格: NT$<%=productPrice%></p>
                     </a>
                 </div>
                 <div class="product">
-                    <a href="../products/pudding.html">
+                    <a href="../products/pudding.jsp">
                         <img src="picture1/日式布丁.jpg" alt="日式布丁">
-                        <p>日式布丁</p>
-                        <p>價格: NT$150</p>
+                        <%
+                            // Step 1: 連接資料庫
+                            Class.forName("com.mysql.jdbc.Driver");
+                            url = "jdbc:mysql://localhost/shop?serverTimezone=UTC";
+                            con = DriverManager.getConnection(url, "root", "1234");
+                            if (con.isClosed()) {
+                                out.println("連線建立失敗");
+                            } else {
+                                request.setCharacterEncoding("UTF-8");
+                                String item = "SELECT * FROM product WHERE ProductName = '日式布丁'";
+                                ResultSet gs = con.createStatement().executeQuery(item);
+
+                                if(gs.next()) {
+                                    productName = gs.getString("ProductName");
+                                    productPrice = gs.getString("Price");
+                                }
+                                gs.close();
+                                con.close();
+                            }
+                        %>
+                        <p><%=productName%></p>
+                        <p>價格: NT$<%=productPrice%></p>
                     </a>
                 </div>
                 <div class="product">
-                    <a href="../products/water-cake.html">
+                    <a href="../products/water-cake.jsp">
                         <img src="picture1/水信玄餅.jpg" alt="水信玄餅">
-                        <p>水信玄餅</p>
-                        <p>價格: NT$150</p>
+                        <%
+                            // Step 1: 連接資料庫
+                            Class.forName("com.mysql.jdbc.Driver");
+                            url = "jdbc:mysql://localhost/shop?serverTimezone=UTC";
+                            con = DriverManager.getConnection(url, "root", "1234");
+                            if (con.isClosed()) {
+                                out.println("連線建立失敗");
+                            } else {
+                                request.setCharacterEncoding("UTF-8");
+                                String item = "SELECT * FROM product WHERE ProductName = '水信玄餅'";
+                                ResultSet gs = con.createStatement().executeQuery(item);
+
+                                if(gs.next()) {
+                                    productName = gs.getString("ProductName");
+                                    productPrice = gs.getString("Price");
+                                }
+                                gs.close();
+                                con.close();
+                            }
+                        %>
+                        <p><%=productName%></p>
+                        <p>價格: NT$<%=productPrice%></p>
                     </a>
                 </div>
                 <div class="product">
-                    <a href="../products/dorayaki.html">
+                    <a href="../products/dorayaki.jsp">
                         <img src="picture1/銅鑼燒.jpg" alt="銅鑼燒">
-                        <p>銅鑼燒</p>
-                        <p>價格: NT$150</p>
+                        <%
+                            // Step 1: 連接資料庫
+                            Class.forName("com.mysql.jdbc.Driver");
+                            url = "jdbc:mysql://localhost/shop?serverTimezone=UTC";
+                            con = DriverManager.getConnection(url, "root", "1234");
+                            if (con.isClosed()) {
+                                out.println("連線建立失敗");
+                            } else {
+                                request.setCharacterEncoding("UTF-8");
+                                String item = "SELECT * FROM product WHERE ProductName = '銅鑼燒'";
+                                ResultSet gs = con.createStatement().executeQuery(item);
+
+                                if(gs.next()) {
+                                    productName = gs.getString("ProductName");
+                                    productPrice = gs.getString("Price");
+                                }
+                                gs.close();
+                                con.close();
+                            }
+                        %>
+                        <p><%=productName%></p>
+                        <p>價格: NT$<%=productPrice%></p>
                     </a>
                 </div>
                 <div class="product">
-                    <a href="../products/yokan.html">
+                    <a href="../products/yokan.jsp">
                         <img src="picture1/羊羹.jpg" alt="羊羹">
-                        <p>羊羹</p>
-                        <p>價格: NT$150</p>
+                        <%
+                            // Step 1: 連接資料庫
+                            Class.forName("com.mysql.jdbc.Driver");
+                            url = "jdbc:mysql://localhost/shop?serverTimezone=UTC";
+                            con = DriverManager.getConnection(url, "root", "1234");
+                            if (con.isClosed()) {
+                                out.println("連線建立失敗");
+                            } else {
+                                request.setCharacterEncoding("UTF-8");
+                                String item = "SELECT * FROM product WHERE ProductName = '羊羹'";
+                                ResultSet gs = con.createStatement().executeQuery(item);
+
+                                if(gs.next()) {
+                                    productName = gs.getString("ProductName");
+                                    productPrice = gs.getString("Price");
+                                }
+                                gs.close();
+                                con.close();
+                            }
+                        %>
+                        <p><%=productName%></p>
+                        <p>價格: NT$<%=productPrice%></p>
                     </a>
                 </div>
                 <div class="product">
-                    <a href="../products/soy-sauce-dango.html">
+                    <a href="../products/soy-sauce-dango.jsp">
                         <img src="picture1/醬油糰子.jpg" alt="醬油糰子">
-                        <p>醬油糰子</p>
-                        <p>價格: NT$150</p>
+                        <%
+                            // Step 1: 連接資料庫
+                            Class.forName("com.mysql.jdbc.Driver");
+                            url = "jdbc:mysql://localhost/shop?serverTimezone=UTC";
+                            con = DriverManager.getConnection(url, "root", "1234");
+                            if (con.isClosed()) {
+                                out.println("連線建立失敗");
+                            } else {
+                                request.setCharacterEncoding("UTF-8");
+                                String item = "SELECT * FROM product WHERE ProductName = '醬油糰子'";
+                                ResultSet gs = con.createStatement().executeQuery(item);
+
+                                if(gs.next()) {
+                                    productName = gs.getString("ProductName");
+                                    productPrice = gs.getString("Price");
+                                }
+                                gs.close();
+                                con.close();
+                            }
+                        %>
+                        <p><%=productName%></p>
+                        <p>價格: NT$<%=productPrice%></p>
                     </a>
                 </div>
                 <div class="product">
-                    <a href="../products/warabi-mochi.html">
+                    <a href="../products/warabi-mochi.jsp">
                         <img src="picture1/蕨餅.jpg" alt="蕨餅">
-                        <p>蕨餅</p>
-                        <p>價格: NT$150</p>
+                        <%
+                            // Step 1: 連接資料庫
+                            Class.forName("com.mysql.jdbc.Driver");
+                            url = "jdbc:mysql://localhost/shop?serverTimezone=UTC";
+                            con = DriverManager.getConnection(url, "root", "1234");
+                            if (con.isClosed()) {
+                                out.println("連線建立失敗");
+                            } else {
+                                request.setCharacterEncoding("UTF-8");
+                                String item = "SELECT * FROM product WHERE ProductName = '蕨餅'";
+                                ResultSet gs = con.createStatement().executeQuery(item);
+
+                                if(gs.next()) {
+                                    productName = gs.getString("ProductName");
+                                    productPrice = gs.getString("Price");
+                                }
+                                gs.close();
+                                con.close();
+                            }
+                        %>
+                        <p><%=productName%></p>
+                        <p>價格: NT$<%=productPrice%></p>
                     </a>
                 </div>
             </div>
