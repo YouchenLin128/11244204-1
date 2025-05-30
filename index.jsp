@@ -16,7 +16,7 @@
     <!-- 固定在頁面頂部的推播區域，包含訊息 -->
     <div class="ad-banner">
         <b>
-            <p>即日起至6/30，購買任何商品滿500元現折10元！</p>
+            <p>📣即日起至6/30，購買任何商品滿500元現折10元！</p>
         </b>
     </div>
     
@@ -75,31 +75,35 @@
         </nav>
     </header>
 
-    <!-- 圖片區塊，在 header 下方顯示 -->
-    <!-- 底部廣告輪播區域 -->
-    <div class="carousel-container">
-        <div class="carousel">
-            <a href="products/christmas-wagashi-gift-set.jsp">
-                <img src="picture/聖誕和菓子禮盒組.jpg" alt="廣告圖片1">
-            </a>
-            <a href="products/snowman-daifuku.jsp">
-                <img src="picture/雪人大福.jpg" alt="廣告圖片2">
-            </a>
-            <a href="products/christmas-party-dorayaki-with-cream.jsp">
-                <img src="picture/聖誕派對生乳銅鑼燒1.jpg" alt="廣告圖片3">
-            </a>
-            <a href="products/christmas-wagashi-gift-set.jsp">
-                <img src="picture/聖誕和菓子禮盒組.jpg" alt="廣告圖片1">
-            </a>
-            <a href="products/snowman-daifuku.jsp">
-                <img src="picture/雪人大福.jpg" alt="廣告圖片2">
-            </a>
-            <a href="products/christmas-party-dorayaki-with-cream.jsp">
-                <img src="picture/聖誕派對生乳銅鑼燒1.jpg" alt="廣告圖片3">
-            </a>
-        </div>
-    </div>
-    
+    <!-- 頂部隨機廣告區域 -->
+    <div class="random-ad" style="text-align: center;">
+    <%
+        // Step 1: 連接資料庫，並隨機選擇一條廣告
+        String adPicture = "";
+        String adPage = "";
+        
+        try {
+            String adSql = "SELECT adpicture, adpage FROM ads ORDER BY RAND() LIMIT 1";
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/work?serverTimezone=UTC", "root", "1234");
+            ResultSet rs = con.createStatement().executeQuery(adSql);
+
+            if (rs.next()) {
+                adPicture = rs.getString("adpicture");
+                adPage = rs.getString("adpage");
+            }
+
+            rs.close();
+            con.close();
+        } catch (SQLException e) {
+            out.println("Error: " + e.getMessage());
+        }
+    %>
+
+    <!-- 顯示隨機廣告 -->
+    <a href="<%=adPage%>" target="_self">
+        <img src="<%=adPicture%>" alt="Random Ad" style="width: 800px; margin-top: 100px;height: 300px;">
+    </a>
+</div>
 
     <main class="container">
         <aside class="sidebar">
