@@ -50,7 +50,7 @@
                             count1++;
                             countString = String.valueOf(count1); //將整數轉成字串
                             //寫回資料庫
-                            sql="UPDATE `countview` SET `count` = " + countString ;
+                            sql="UPDATE `countview` SET `Count` = " + countString ;
                             con.createStatement().execute(sql);
                         }
                         out.println("目前訪問人次：" + count1);
