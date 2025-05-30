@@ -1,5 +1,5 @@
 // 商品圖片切換
-const images = ["picture2/水信玄餅.jpg", "picture2/水信玄餅2.jpg", ];
+const images = ["picture2/水信玄餅.jpg", "picture2/水信玄餅2.jpg",];
 let currentImageIndex = 0;
 const productImage = document.getElementById("productImage");
 document.querySelector(".prev").addEventListener("click", () => {
@@ -71,28 +71,29 @@ detailTabs.forEach(tab => {
 
 // 推薦商品動態生成
 const recommendedProducts = [
-    { 
-        name: "蕨餅", 
-        price: "NT$ 150", 
-        img: "picture2/蕨餅.jpg", 
-        link: "warabi-mochi.html" 
+    {
+        name: "蕨餅",
+        price: "NT$ 150",
+        img: "picture2/蕨餅.jpg",
+        link: "./warabi-mochi.jsp"
     },
-    { 
-        name: "草莓大福", 
-        price: "NT$ 150", 
-        img: "picture2/草莓大福.jpg", 
-        link: "./strawberry-daifuku.html" 
+    {
+        name: "草莓大福",
+        price: "NT$ 150",
+        img: "picture2/草莓大福.jpg",
+        link: "./strawberry-daifuku.jsp"
     },
-    { 
-        name: "醬油糰子", 
-        price: "NT$ 150", 
-        img: "picture2/醬油糰子.jpg", 
-        link: "./soy-sauce-dango.html" 
+    {
+        name: "醬油糰子",
+        price: "NT$ 150",
+        img: "picture2/醬油糰子.jpg",
+        link: "./soy-sauce-dango.jsp"
     }
 ];
 
 const recommendationsContainer = document.querySelector(".recommendations");
 recommendedProducts.forEach(product => {
+    console.log("link:", product.link); // 🔍 確認是否正確是 .jsp
     const productElement = document.createElement("div");
     productElement.className = "recommendation";
     productElement.innerHTML = `

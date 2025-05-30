@@ -27,8 +27,8 @@
             <ul>
                 <li><a href="../index.jsp">首頁</a></li>
                 <li><a href="../about.html">關於我們</a></li>
-                <li><a href="../register.html">會員註冊</a></li>
-                <li><a href="../enter.html">會員登入</a></li>
+                <li><a href="../register.jsp">會員註冊</a></li>
+                <li><a href="../enter.jsp">會員登入</a></li>
                 <li><a href="#">會員中心</a></li>
                 <li><a href="../shoppingcart.html">購物車</a></li>
             </ul>
@@ -91,16 +91,49 @@
             </aside>
 
             <!-- 商品詳情 -->
+
+            <%!
+                String productName = "";
+                String productPrice = "";
+                String productDescription = "";
+                String content1 = "";
+                String content2 = "";
+            %>
+
+            <%
+                // Step 1: 連接資料庫
+                Class.forName("com.mysql.jdbc.Driver");
+                url = "jdbc:mysql://localhost/shop?serverTimezone=UTC";
+                con = DriverManager.getConnection(url, "root", "1234");
+                if (con.isClosed()) {
+                    out.println("連線建立失敗");
+                } else {
+                    request.setCharacterEncoding("UTF-8");
+                    String product = "SELECT * FROM product WHERE ProductName = '栗子饅頭'";
+                    ResultSet pd = con.createStatement().executeQuery(product);
+
+                    if(pd.next()) {
+                        productName = pd.getString("ProductName");
+                        productPrice = pd.getString("Price");
+                        productDescription = pd.getString("Description");
+                        content1 = pd.getString("Content1");
+                        content2 = pd.getString("Content2");
+                    }
+                    pd.close();
+                    con.close();
+                }
+            %>
+
             <section class="product-detail">
                 <div class="product-gallery">
                     <button class="prev">←</button>
                         <img id="productImage" src="picture2/栗子饅頭.jpg" alt="栗子饅頭">
                     <button class="next">→</button>
                 </div>
-                <h2 class="product-title">栗子饅頭</h2>
-                <p class="price">NT$ 150</p>
+                <h2 class="product-title"><%=productName%></h2>
+                <p class="price">NT$ <%=productPrice%></p>
                 <p class="description">
-                    外皮為鬆軟的蒸餅，內餡由香甜的栗子和糖製成，帶有濃郁的栗子香。
+                    <%=productDescription%>
                 </p>
                 <div class="quantity-selector">
                     <button class="quantity-decrease">-</button>
@@ -126,7 +159,7 @@
             </div>
             <div class="tab-content" id="details">
                 <h3>商品詳細內容</h3>
-                <p>成分：栗子、麵粉、糖、酵母、雞蛋、黃油</p>
+                <p><%=content1%></p>
             </div>
             <div class="tab-content" id="shipping" style="display: none;">
                 <h3>出貨與付款方式</h3>

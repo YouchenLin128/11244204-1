@@ -27,8 +27,8 @@
             <ul>
                 <li><a href="../index.jsp">首頁</a></li>
                 <li><a href="../about.html">關於我們</a></li>
-                <li><a href="../register.html">會員註冊</a></li>
-                <li><a href="../enter.html">會員登入</a></li>
+                <li><a href="../register.jsp">會員註冊</a></li>
+                <li><a href="../enter.jsp">會員登入</a></li>
                 <li><a href="#">會員中心</a></li>
                 <li><a href="../shoppingcart.html">購物車</a></li>
             </ul>
@@ -91,16 +91,49 @@
             </aside>
 
             <!-- 商品詳情 -->
+
+            <%!
+                String productName = "";
+                String productPrice = "";
+                String productDescription = "";
+                String content1 = "";
+                String content2 = "";
+            %>
+
+            <%
+                // Step 1: 連接資料庫
+                Class.forName("com.mysql.jdbc.Driver");
+                url = "jdbc:mysql://localhost/shop?serverTimezone=UTC";
+                con = DriverManager.getConnection(url, "root", "1234");
+                if (con.isClosed()) {
+                    out.println("連線建立失敗");
+                } else {
+                    request.setCharacterEncoding("UTF-8");
+                    String product = "SELECT * FROM product WHERE ProductName = '聖誕和菓子禮盒組'";
+                    ResultSet pd = con.createStatement().executeQuery(product);
+
+                    if(pd.next()) {
+                        productName = pd.getString("ProductName");
+                        productPrice = pd.getString("Price");
+                        productDescription = pd.getString("Description");
+                        content1 = pd.getString("Content1");
+                        content2 = pd.getString("Content2");
+                    }
+                    pd.close();
+                    con.close();
+                }
+            %>
+
             <section class="product-detail">
                 <div class="product-gallery">
                     <button class="prev">←</button>
                         <img id="productImage" src="picture2/聖誕和菓子禮盒組.jpg" alt="聖誕和菓子禮盒組">
                     <button class="next">→</button>
                 </div>
-                <h2 class="product-title">聖誕和菓子禮盒組</h2>
-                <p class="price">NT$ 150</p>
+                <h2 class="product-title"><%=productName%></h2>
+                <p class="price">NT$ <%=productPrice%></p>
                 <p class="description">
-                    禮盒內含多種和菓子，成分多樣，旨在展現節日的美好。
+                    <%=productDescription%>
                 </p>
                 <div class="quantity-selector">
                     <button class="quantity-decrease">-</button>
@@ -126,7 +159,7 @@
             </div>
             <div class="tab-content" id="details">
                 <h3>商品詳細內容</h3>
-                <p>成分：根據禮盒內含的和菓子種類，常見成分包括紅豆餡（紅豆、糖）、白豆餡（白豆、糖）、糯米粉、色素、寒天、抹茶粉等。</p>
+                <p><%=content1%></p>
             </div>
             <div class="tab-content" id="shipping" style="display: none;">
                 <h3>出貨與付款方式</h3>
@@ -179,51 +212,59 @@
             </div>
         </section>
 
+        <!-- 推薦商品 -->
+        <section class="recommended-products">
+            <h3>推薦商品</h3>
+            <div class="recommendations">
+                <!-- 這裡將由 JS 動態生成推薦商品 -->
+            </div>
+        </section>
+    
+    <script>
+        document.querySelector('.add-to-cart').addEventListener('click', function () {
+    // 獲取商品資訊
+    const productTitle = document.querySelector('.product-title').textContent;
+    const productPrice = parseInt(document.querySelector('.price').textContent.replace('NT$', ''));
+    const quantity = parseInt(document.querySelector('.quantity-selector input').value);
+    const productImage = document.getElementById('productImage').src;
 
+    // 創建商品物件
+    const product = {
+        name: productTitle,
+        price: productPrice,
+        quantity: quantity,
+        image: productImage,
+    };
 
-        <script>
-            document.querySelector('.add-to-cart').addEventListener('click', function () {
-        // 獲取商品資訊
-        const productTitle = document.querySelector('.product-title').textContent;
-        const productPrice = parseInt(document.querySelector('.price').textContent.replace('NT$', ''));
-        const quantity = parseInt(document.querySelector('.quantity-selector input').value);
-        const productImage = document.getElementById('productImage').src;
-    
-        // 創建商品物件
-        const product = {
-            name: productTitle,
-            price: productPrice,
-            quantity: quantity,
-            image: productImage,
-        };
-    
-        // 獲取現有購物車數據
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    
-        // 檢查是否已存在該商品
-        const existingProductIndex = cart.findIndex(item => item.name === product.name);
-        if (existingProductIndex !== -1) {
-            // 若商品已存在，則更新數量
-            cart[existingProductIndex].quantity += product.quantity;
-        } else {
-            // 否則新增商品
-            cart.push(product);
-        }
-    
-        // 儲存更新後的購物車
-        localStorage.setItem('cart', JSON.stringify(cart));
-    
-        // 更新購物車數量顯示
-        let count = cart.reduce((total, item) => total + item.quantity, 0);
-        const cartText = document.getElementById('cart-text');
-        if (cartText) {
-            cartText.textContent = `購物車`;
-        }
-    
-        // 顯示成功訊息
-        alert(`${productTitle} 已加入購物車！`);
-    });
-        </script>
+    // 獲取現有購物車數據
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // 檢查是否已存在該商品
+    const existingProductIndex = cart.findIndex(item => item.name === product.name);
+    if (existingProductIndex !== -1) {
+        // 若商品已存在，則更新數量
+        cart[existingProductIndex].quantity += product.quantity;
+    } else {
+        // 否則新增商品
+        cart.push(product);
+    }
+
+    // 儲存更新後的購物車
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    // 更新購物車數量顯示
+    let count = cart.reduce((total, item) => total + item.quantity, 0);
+    const cartText = document.getElementById('cart-text');
+    if (cartText) {
+        cartText.textContent = `購物車`;
+    }
+
+    // 顯示成功訊息
+    alert(`${productTitle} 已加入購物車！`);
+});
+    </script>
+
+    <footer>
         <p>© 2024 月見甜鋪</p>
     </footer>
 </body>

@@ -177,7 +177,14 @@
                 </div>
             </div>
         </section>
-
+        
+        <!-- 推薦商品 -->
+        <section class="recommended-products">
+            <h3>推薦商品</h3>
+            <div class="recommendations">
+                <!-- 這裡將由 JS 動態生成推薦商品 -->
+            </div>
+        </section>
 
 
         <script>
