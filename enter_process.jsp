@@ -59,7 +59,8 @@
         rs = pstmt.executeQuery();
 
         if (rs.next()) {
-            session.setAttribute("user", rs.getString("realname"));
+            session.setAttribute("username", rs.getString("realname"));
+            session.setAttribute("memberID", rs.getString("id"));  // 抓會員編號的話
             response.sendRedirect("index.jsp");
         } else {
 %>

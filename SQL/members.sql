@@ -40,7 +40,9 @@ CREATE TABLE `members` (
 
 LOCK TABLES `members` WRITE;
 /*!40000 ALTER TABLE `members` DISABLE KEYS */;
-INSERT INTO `members` VALUES ('林','12345@gmail.com','2025-05-12','5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5');
+INSERT INTO `members` (`realname`, `email`, `birthday`, `password`)
+VALUES ('林','12345@gmail.com','2025-05-12','5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5');
+
 /*!40000 ALTER TABLE `members` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

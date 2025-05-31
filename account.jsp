@@ -1,16 +1,18 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+    String username = (String) session.getAttribute("username");
+    String memberID = (String) session.getAttribute("memberID"); // 你可以自行決定命名
+    if (username == null) {
+        response.sendRedirect("enter.jsp"); // 如果沒登入，導回登入頁
+        return;
+    }
+%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>會員</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+    <title>會員中心</title>
     <link rel="stylesheet" href="lin.css">
-    <style>
-        section{
-            margin: 50px;
-        }
-    </style>
 </head>
 <body>
     <header>
@@ -19,25 +21,30 @@
             <ul>
                 <li><a href="index.jsp">首頁</a></li>
                 <li><a href="about.html">關於我們</a></li>
-                <li><a href="register.html">會員註冊</a></li>
-                <li><a href="enter.html">會員登入</a></li>
-                <li><a href="account.html">會員中心</a></li>
-                <li><a href="shoppingcart.html">購物車</a></li>
+                <li><a href="register.jsp">會員註冊</a></li>
+                <li><a href="enter.jsp">會員登入</a></li>
+                <li><a href="account.jsp">會員中心</a></li>
+                <li><a href="cart.jsp">購物車</a></li>
             </ul>
         </nav>
     </header>
+
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h1 id="title">會員中心</h1>
-        <button id="logoutButton" style="text-align: center;margin-right: 50px;">登出</button>
-    </div>    
+        <form action="logout.jsp" method="post" style="margin-right: 50px;">
+            <button type="submit" style="text-align: center;">登出</button>
+        </form>
+    </div>
+
     <section style="display: flex; align-items: center; justify-content: space-between; padding-right: 200px;">
         <div style="display: flex; align-items: center;">
             <img style="border-radius: 50%;" src="picture/usigi.jpg" width="150px" alt="Profile Picture">
             <div style="display: flex; flex-direction: column; padding-left: 20px;font-size: large;">
-                <p style="margin: 0;">烏薩奇</p>
-                <p style="margin: 0; color: gray;">會員編號: woola56565656</p>
+                <p style="margin: 0;"><%= username %></p>
+                <p style="margin: 0; color: gray;">會員編號: <%= memberID %></p>
             </div>
         </div>
+        <!-- 點數與折價券資訊（可先寫死測試） -->
         <div style="display: flex; gap: 20px; align-items: center;">
             <div style="text-align: center;border: 1px solid#f3e8d6;border-radius: 50px;background-color:#f3e8d6;">
                 <img src="picture/coin.png" width="50px" alt="Exclamation Icon">
@@ -51,6 +58,8 @@
             </div>
         </div>
     </section>
+
+    <!-- 其他會員功能按鈕（資料、訂單、評價...） -->
     <section style="background-color:  #f3e8d6;border-radius: 25px;">
         <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; padding-left: 20px; padding-top: 20px;">
             <div style="text-align: center;">
@@ -69,136 +78,11 @@
                 <a href="mailto:example@example.com"><img src="picture/customer-support.png" style="width: 40px;"> </a>
                 <div><a href="mailto:example@example.com">聯絡客服</a></div>
             </div>
-            <div style="text-align: center;">
-                <a href="accountsettings.html"><img src="picture/setting.png" style="width: 40px;"></a>
-                <div><a href="accountsettings.html">帳戶設定</a></div>
-            </div>
         </div>
-       <h3  style="margin-left: 15px;border-top: 1px solid rgb(176, 163, 163);"></div>瀏覽紀錄</h3>
-       <div class="history-container">
-        <!-- 第一组 -->
-            <div class="history-item">
-                <a href="products/konpeito.html">
-                    <img src="picture/金平糖.jpg" alt="金平糖圖片"> 
-                    <div class="info">
-                        <h3>金平糖</h3>
-                        <p>$150</p></a>
-                    </div>
-            </div>
-            <div class="history-item">
-                <a href="products/strawberry-daifuku.html">
-                <img src="picture/草莓大福.jpg" >
-                <div class="info">
-                    <h3>草莓大福</h3>
-                    <p>$150</p></a>
-                </div>
-            </div>
-            <!-- 第二组 -->
-            <div class="history-item">
-                <a href="products/warabi-mochi.html">
-                <img src="picture/蕨餅.jpg" >
-                <div class="info">
-                    <h3>蕨餅</h3>
-                    <p>$150</p></a>
-                </div>
-            </div>
-            <div class="history-item">
-                <a href="products/orange-daifuku.html">
-                <img src="picture/桔大福.jpg">
-                <div class="info">
-                    <h3>桔大福</h3>
-                    <p>$150</p></a>
-                </div>
-            </div>
-            <!-- 第三组 -->
-            <div class="history-item">
-                <a href="products/dorayaki.html">
-                <img src="picture/銅鑼燒.jpg">
-                <div class="info">
-                    <h3>銅鑼燒</h3>
-                    <p>$150</p></a>
-                </div>
-            </div>
-            <div class="history-item">
-                <a href="products/snowman-daifuku.html">
-                <img src="picture/雪人大福.jpg">
-                <div class="info">
-                    <h3>雪人大福</h3>
-                    <p>$150</p></a>
-                </div>
-            </div>
-            <!-- 第四组 -->
-            <div class="history-item">
-                <a href="products/chestnut-manju.html">
-                <img src="picture/栗子饅頭.jpg">
-                <div class="info">
-                    <h3>栗子饅頭</h3>
-                    <p>$150</p></a>
-                </div>
-            </div>
-            <div class="history-item">
-                <a href="products/yokan.html">
-                <img src="picture/羊羹.jpg">
-                <div class="info">
-                    <h3>羊羹</h3>
-                    <p>$150</p></a>
-                </div>
-            </div>
-    </div>
     </section>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true"; // 確認登入狀態
-        if (!isLoggedIn) {
-            alert("請先登入後再訪問會員頁面！");
-            window.location.href = "enter.html"; // 未登入時跳轉至登入頁
-        }
-        });
-        document.addEventListener("DOMContentLoaded", function () {
-            const logoutButton = document.getElementById("logoutButton");
-            logoutButton.addEventListener("click", function () {
-                localStorage.setItem("isLoggedIn", "false"); // 清除登入狀態
-                alert("您已成功登出！");
-                window.location.href = "enter.html"; // 跳轉至登入頁面
-            });
-        });
-
-
-    </script>
     <footer>
         <p>© 2024 月見甜舖 | 甜點讓生活更美好</p>
         <p>聯絡我們：<a href="mailto:contact@mooncakeshop.com">contact@mooncakeshop.com</a></p>
     </footer>
 </body>
 </html>
-
-
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%
-    // 檢查是否已有登入的 session
-    String id = (String) session.getAttribute("id"); // 或改成 "user" 根據你 login.jsp 的設計
-
-    if (id == null || id.equals("")) {
-        // 尚未登入，導向登入頁面
-        response.sendRedirect("enter.jsp"); // 你可以改為 login.jsp 或其他登入頁面
-        return;
-    }
-%>
-
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>會員專區</title>
-</head>
-<body>
-    <h2>歡迎回來，<%= id %>！</h2>
-    <p>這是會員專屬頁面，只有登入的會員才能看到這裡的內容。</p>
-
-    <p><a href="logout.jsp">登出</a></p>
-</body>
-</html>
-
-
-
-
