@@ -91,16 +91,56 @@
             </aside>
 
             <!-- 商品詳情 -->
+            <%!
+                String productName = "";
+                String productPrice = "";
+                String productDescription = "";
+                String content1 = "";
+                String content2 = "";
+                String quantity = "";
+                String pictureName = "";
+            %>
+
+            <%
+                // Step 1: 連接資料庫
+                Class.forName("com.mysql.jdbc.Driver");
+                url = "jdbc:mysql://localhost/shop?serverTimezone=UTC";
+                con = DriverManager.getConnection(url, "root", "1234");
+                if (con.isClosed()) {
+                    out.println("連線建立失敗");
+                } else {
+                    request.setCharacterEncoding("UTF-8");
+                    String product = "SELECT * FROM product WHERE ProductName = '羊羹'";
+                    ResultSet pd = con.createStatement().executeQuery(product);
+
+                    if(pd.next()) {
+                        productName = pd.getString("ProductName");
+                        productPrice = pd.getString("Price");
+                        productDescription = pd.getString("Description");
+                        content1 = pd.getString("Content1");
+                        content2 = pd.getString("Content2");
+                        quantity = pd.getString("Quantity");
+                        pictureName = pd.getString("PictureName");
+                    }
+                    pd.close();
+                    con.close();
+                }
+            %>
+
             <section class="product-detail">
                 <div class="product-gallery">
                     <button class="prev">←</button>
-                        <img id="productImage" src="picture2/羊羹.jpg" alt="羊羹">
+                        <img id="productImage" src="picture2/<%=pictureName%>" alt="羊羹">
                     <button class="next">→</button>
                 </div>
-                <h2 class="product-title">羊羹</h2>
-                <p class="price">NT$ 150</p>
+                <h2 class="product-title"><%=productName%></h2>
+                <div class="product-info">
+                    <div class='null'></div>
+                    <p class="price">NT$ <%=productPrice%></p>
+                    <p class='quantity'>庫存：<%=quantity%></p>
+                </div>
                 <p class="description">
-                    羊羹是一款歷史悠久的日式傳統甜點，通常由紅豆、糖和寒天製成，口感厚重而緻密。這款羊羹外表光滑，口感滑順，甜而不膩，充滿紅豆的濃郁風味。它不僅適合配茶，還是日常小點心的好選擇，給予您一份安定的幸福感。無論是自用還是送禮，都非常合適。
+                    <%=productDescription%>
                 </p>
                 <div class="quantity-selector">
                     <button class="quantity-decrease">-</button>
@@ -126,8 +166,8 @@
             </div>
             <div class="tab-content" id="details">
                 <h3>商品詳細內容</h3>
-                <p>成分：紅豆餡（紅豆、糖）、寒天、糖</p>
-                <p>主要成分為紅豆和寒天，凝固後形成緻密的質地，糖分使得甜度適中。</p>
+                <p><%=content1%></p>
+                <p><%=content2%></p>
             </div>
             <div class="tab-content" id="shipping" style="display: none;">
                 <h3>出貨與付款方式</h3>

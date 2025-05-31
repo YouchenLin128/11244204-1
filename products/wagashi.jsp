@@ -91,16 +91,56 @@
             </aside>
 
             <!-- 商品詳情 -->
+            <%!
+                String productName = "";
+                String productPrice = "";
+                String productDescription = "";
+                String content1 = "";
+                String content2 = "";
+                String quantity = "";
+                String pictureName = "";
+            %>
+
+            <%
+                // Step 1: 連接資料庫
+                Class.forName("com.mysql.jdbc.Driver");
+                url = "jdbc:mysql://localhost/shop?serverTimezone=UTC";
+                con = DriverManager.getConnection(url, "root", "1234");
+                if (con.isClosed()) {
+                    out.println("連線建立失敗");
+                } else {
+                    request.setCharacterEncoding("UTF-8");
+                    String product = "SELECT * FROM product WHERE ProductName = '和菓子'";
+                    ResultSet pd = con.createStatement().executeQuery(product);
+
+                    if(pd.next()) {
+                        productName = pd.getString("ProductName");
+                        productPrice = pd.getString("Price");
+                        productDescription = pd.getString("Description");
+                        content1 = pd.getString("Content1");
+                        content2 = pd.getString("Content2");
+                        quantity = pd.getString("Quantity");
+                        pictureName = pd.getString("PictureName");
+                    }
+                    pd.close();
+                    con.close();
+                }
+            %>
+
             <section class="product-detail">
                 <div class="product-gallery">
                     <button class="prev">←</button>
-                        <img id="productImage" src="picture2/和菓子.jpg" alt="和菓子">
+                        <img id="productImage" src="picture2/<%=pictureName%>" alt="和菓子">
                     <button class="next">→</button>
                 </div>
-                <h2 class="product-title">和菓子</h2>
-                <p class="price">NT$ 150</p>
+                <h2 class="product-title"><%=productName%></h2>
+                <div class="product-info">
+                    <div class='null'></div>
+                    <p class="price">NT$ <%=productPrice%></p>
+                    <p class='quantity'>庫存：<%=quantity%></p>
+                </div>
                 <p class="description">
-                    精緻的手工甜點，以細膩的白豆餡為基底，捏塑成多樣美麗的造型，每一口都能感受到細緻滑順的口感與溫潤的甜味，彷彿一場視覺與味覺的盛宴。
+                    <%=productDescription%>
                 </p>
                 <div class="quantity-selector">
                     <button class="quantity-decrease">-</button>
@@ -126,8 +166,8 @@
             </div>
             <div class="tab-content" id="details">
                 <h3>商品詳細內容</h3>
-                <p>成分：根據不同種類，通常包含紅豆餡（紅豆、糖）、白豆餡（白豆、糖）、糯米粉、寒天等，並可能加入色素或天然香料製作形狀精緻的外皮。
-                         和菓子的成分通常簡單而天然，旨在突顯食材的純粹風味。</p>
+                <p><%=content1%></p>
+                <p><%=content2%></p>
             </div>
             <div class="tab-content" id="shipping" style="display: none;">
                 <h3>出貨與付款方式</h3>

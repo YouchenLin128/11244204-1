@@ -91,16 +91,55 @@
             </aside>
 
             <!-- 商品詳情 -->
+            <%!
+                String productName = "";
+                String productPrice = "";
+                String productDescription = "";
+                String content1 = "";
+                String content2 = "";
+                String quantity = "";
+                String pictureName = "";
+            %>
+
+            <%
+                // Step 1: 連接資料庫
+                Class.forName("com.mysql.jdbc.Driver");
+                url = "jdbc:mysql://localhost/shop?serverTimezone=UTC";
+                con = DriverManager.getConnection(url, "root", "1234");
+                if (con.isClosed()) {
+                    out.println("連線建立失敗");
+                } else {
+                    request.setCharacterEncoding("UTF-8");
+                    String product = "SELECT * FROM product WHERE ProductName = '金平糖'";
+                    ResultSet pd = con.createStatement().executeQuery(product);
+
+                    if(pd.next()) {
+                        productName = pd.getString("ProductName");
+                        productPrice = pd.getString("Price");
+                        productDescription = pd.getString("Description");
+                        content1 = pd.getString("Content1");
+                        content2 = pd.getString("Content2");
+                        quantity = pd.getString("Quantity");
+                        pictureName = pd.getString("PictureName");
+                    }
+                    pd.close();
+                    con.close();
+                }
+            %>
             <section class="product-detail">
                 <div class="product-gallery">
                     <button class="prev">←</button>
-                        <img id="productImage" src="picture2/金平糖.jpg" alt="金平糖">
+                        <img id="productImage" src="picture2/<%=pictureName%>" alt="金平糖">
                     <button class="next">→</button>
                 </div>
-                <h2 class="product-title">金平糖</h2>
-                <p class="price">NT$ 150</p>
+                <h2 class="product-title"><%=productName%></h2>
+                <div class="product-info">
+                    <div class='null'></div>
+                    <p class="price">NT$ <%=productPrice%></p>
+                    <p class='quantity'>庫存：<%=quantity%></p>
+                </div>
                 <p class="description">
-                    色彩繽紛的糖果晶體，形狀可愛，口感脆甜，入口後糖香四溢，充滿童趣的經典日式零嘴。
+                    <%=productDescription%>
                 </p>
                 <div class="quantity-selector">
                     <button class="quantity-decrease">-</button>
@@ -126,8 +165,8 @@
             </div>
             <div class="tab-content" id="details">
                 <h3>商品詳細內容</h3>
-                <p>成分：糖、色素（天然）</p>
-                <p>金平糖由糖製成，經過多次滾動結晶形成多層糖晶，色彩繽紛，口感甜美。</p>
+                <p><%=content1%></p>
+                <p><%=content2%></p>
             </div>
             <div class="tab-content" id="shipping" style="display: none;">
                 <h3>出貨與付款方式</h3>

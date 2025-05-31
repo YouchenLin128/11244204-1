@@ -91,16 +91,56 @@
             </aside>
 
             <!-- 商品詳情 -->
+            <%!
+                String productName = "";
+                String productPrice = "";
+                String productDescription = "";
+                String content1 = "";
+                String content2 = "";
+                String quantity = "";
+                String pictureName = "";
+            %>
+
+            <%
+                // Step 1: 連接資料庫
+                Class.forName("com.mysql.jdbc.Driver");
+                url = "jdbc:mysql://localhost/shop?serverTimezone=UTC";
+                con = DriverManager.getConnection(url, "root", "1234");
+                if (con.isClosed()) {
+                    out.println("連線建立失敗");
+                } else {
+                    request.setCharacterEncoding("UTF-8");
+                    String product = "SELECT * FROM product WHERE ProductName = '醬油糰子'";
+                    ResultSet pd = con.createStatement().executeQuery(product);
+
+                    if(pd.next()) {
+                        productName = pd.getString("ProductName");
+                        productPrice = pd.getString("Price");
+                        productDescription = pd.getString("Description");
+                        content1 = pd.getString("Content1");
+                        content2 = pd.getString("Content2");
+                        quantity = pd.getString("Quantity");
+                        pictureName = pd.getString("PictureName");
+                    }
+                    pd.close();
+                    con.close();
+                }
+            %>
+
             <section class="product-detail">
                 <div class="product-gallery">
                     <button class="prev">←</button>
-                        <img id="productImage" src="picture2/醬油糰子.jpg" alt="醬油糰子">
+                        <img id="productImage" src="picture2/<%=pictureName%>" alt="醬油糰子">
                     <button class="next">→</button>
                 </div>
-                <h2 class="product-title">醬油糰子</h2>
-                <p class="price">NT$ 150</p>
+                <h2 class="product-title"><%=productName%></h2>
+                <div class="product-info">
+                    <div class='null'></div>
+                    <p class="price">NT$ <%=productPrice%></p>
+                    <p class='quantity'>庫存：<%=quantity%></p>
+                </div>
                 <p class="description">
-                    炭烤後香氣四溢的糰子，淋上甜鹹適中的醬油醬汁，Q彈的口感與焦香味完美交融，令人愛不釋手。
+                    <%=productDescription%>
                 </p>
                 <div class="quantity-selector">
                     <button class="quantity-decrease">-</button>
@@ -126,8 +166,8 @@
             </div>
             <div class="tab-content" id="details">
                 <h3>商品詳細內容</h3>
-                <p>成分：糯米粉、醬油、糖、黃豆粉</p>
-                <p>醬油與糖的混合提供了鹹甜口感，而糯米粉則使糰子外表軟糯。</p>
+                <p><%=content1%></p>
+                <p><%=content2%></p>
             </div>
             <div class="tab-content" id="shipping" style="display: none;">
                 <h3>出貨與付款方式</h3>

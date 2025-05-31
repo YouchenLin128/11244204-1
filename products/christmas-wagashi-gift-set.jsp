@@ -98,6 +98,8 @@
                 String productDescription = "";
                 String content1 = "";
                 String content2 = "";
+                String quantity = "";
+                String pictureName = "";
             %>
 
             <%
@@ -118,6 +120,8 @@
                         productDescription = pd.getString("Description");
                         content1 = pd.getString("Content1");
                         content2 = pd.getString("Content2");
+                        quantity = pd.getString("Quantity");
+                        pictureName = pd.getString("PictureName");
                     }
                     pd.close();
                     con.close();
@@ -127,11 +131,15 @@
             <section class="product-detail">
                 <div class="product-gallery">
                     <button class="prev">←</button>
-                        <img id="productImage" src="picture2/聖誕和菓子禮盒組.jpg" alt="聖誕和菓子禮盒組">
+                        <img id="productImage" src="picture2/<%=pictureName%>" alt="聖誕和菓子禮盒組">
                     <button class="next">→</button>
                 </div>
                 <h2 class="product-title"><%=productName%></h2>
-                <p class="price">NT$ <%=productPrice%></p>
+                <div class="product-info">
+                    <div class='null'></div>
+                    <p class="price">NT$ <%=productPrice%></p>
+                    <p class='quantity'>庫存：<%=quantity%></p>
+                </div>
                 <p class="description">
                     <%=productDescription%>
                 </p>

@@ -91,16 +91,56 @@
             </aside>
 
             <!-- 商品詳情 -->
+            <%!
+                String productName = "";
+                String productPrice = "";
+                String productDescription = "";
+                String content1 = "";
+                String content2 = "";
+                String quantity = "";
+                String pictureName = "";
+            %>
+
+            <%
+                // Step 1: 連接資料庫
+                Class.forName("com.mysql.jdbc.Driver");
+                url = "jdbc:mysql://localhost/shop?serverTimezone=UTC";
+                con = DriverManager.getConnection(url, "root", "1234");
+                if (con.isClosed()) {
+                    out.println("連線建立失敗");
+                } else {
+                    request.setCharacterEncoding("UTF-8");
+                    String product = "SELECT * FROM product WHERE ProductName = '日式布丁'";
+                    ResultSet pd = con.createStatement().executeQuery(product);
+
+                    if(pd.next()) {
+                        productName = pd.getString("ProductName");
+                        productPrice = pd.getString("Price");
+                        productDescription = pd.getString("Description");
+                        content1 = pd.getString("Content1");
+                        content2 = pd.getString("Content2");
+                        quantity = pd.getString("Quantity");
+                        pictureName = pd.getString("PictureName");
+                    }
+                    pd.close();
+                    con.close();
+                }
+            %>
+
             <section class="product-detail">
                 <div class="product-gallery">
                     <button class="prev">←</button>
-                        <img id="productImage" src="picture2/日式布丁.jpg" alt="日式布丁">
+                        <img id="productImage" src="picture2/<%=pictureName%>" alt="日式布丁">
                     <button class="next">→</button>
                 </div>
-                <h2 class="product-title">日式布丁</h2>
-                <p class="price">NT$ 150</p>
+                <h2 class="product-title"><%=productName%></h2>
+                <div class="product-info">
+                    <div class='null'></div>
+                    <p class="price">NT$ <%=productPrice%></p>
+                    <p class='quantity'>庫存：<%=quantity%></p>
+                </div>
                 <p class="description">
-                    綿密細緻的布丁散發著濃郁奶香，入口即化，甜而不膩，每一口都充滿日式甜點的溫柔與美好。
+                    <%=productDescription%>
                 </p>
                 <div class="quantity-selector">
                     <button class="quantity-decrease">-</button>
@@ -126,8 +166,8 @@
             </div>
             <div class="tab-content" id="details">
                 <h3>商品詳細內容</h3>
-                <p>成分：牛奶、蛋、糖、香草精、焦糖（糖、黃油）</p>
-                <p>濃郁的牛奶與蛋混合製成奶香四溢的布丁，底部的焦糖增添了甜蜜的風味。</p>
+                <p><%=content1%></p>
+                <p><%=content2%></p>
             </div>
             <div class="tab-content" id="shipping" style="display: none;">
                 <h3>出貨與付款方式</h3>
