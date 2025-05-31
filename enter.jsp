@@ -61,6 +61,7 @@
         <a href="register.jsp">
             <button type="button">新手加入→請註冊</button>
         </a>
+        
 </form>
 
 

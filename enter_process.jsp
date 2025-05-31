@@ -24,6 +24,15 @@
     String email = request.getParameter("email").trim();
     String rawPassword = request.getParameter("password").trim();
     String password = hashPassword(rawPassword);
+ // 管理者帳號判斷（不經過 hash 與資料庫）
+    if (email.equals("12345@gmail.com") && rawPassword.equals("12345")) {
+        session.setAttribute("user", "管理者");
+        session.setAttribute("isAdmin", true);
+        response.sendRedirect("admin.jsp");
+        return;
+    }
+
+    //  一般會員登入（有 hash）
 
     if (password == null) {
         out.println("密碼加密錯誤！");

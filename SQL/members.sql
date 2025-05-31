@@ -25,6 +25,7 @@ DROP TABLE IF EXISTS `members`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `members` (
+  `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `realname` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `birthday` date NOT NULL,
