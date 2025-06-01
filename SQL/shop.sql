@@ -79,7 +79,7 @@ CREATE TABLE `product` (
   `Description` varchar(200) NOT NULL,
   `Content1` varchar(100) DEFAULT NULL,
   `Content2` varchar(100) DEFAULT NULL,
-  `Quantity` int NOT NULL,
+  `Stock` int NOT NULL,
   `PictureName` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`ProductID`),
   UNIQUE KEY `ProductNameAK1` (`ProductName`) USING BTREE
