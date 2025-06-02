@@ -27,10 +27,10 @@
             <ul>
                 <li><a href="../index.jsp">首頁</a></li>
                 <li><a href="../about.html">關於我們</a></li>
-                <li><a href="../register.html">會員註冊</a></li>
-                <li><a href="../enter.html">會員登入</a></li>
-                <li><a href="../account.html">會員中心</a></li>
-                <li><a href="../shoppingcart.html">購物車</a></li>
+                <li><a href="../register.jsp">會員註冊</a></li>
+                <li><a href="../enter.jsp">會員登入</a></li>
+                <li><a href="../account.jsp">會員中心</a></li>
+                <li><a href="../cart.jsp">購物車</a></li>
             </ul>
         </nav>
     </header>
@@ -89,16 +89,14 @@
                 
                 </ul>
             </aside>
-
-            <!-- 商品詳情 -->
-            <%!
+            <%! 
+                String productID = ""; 
                 String productName = "";
                 String productPrice = "";
                 String productDescription = "";
                 String content1 = "";
                 String content2 = "";
-                String quantity = "";
-                String pictureName = "";
+                String productImage = "";
             %>
 
             <%
@@ -119,42 +117,47 @@
                         productDescription = pd.getString("Description");
                         content1 = pd.getString("Content1");
                         content2 = pd.getString("Content2");
-                        quantity = pd.getString("Quantity");
-                        pictureName = pd.getString("PictureName");
+                        productImage = pd.getString("ProductImage");
+                        productID = pd.getString("ProductID");
                     }
                     pd.close();
                     con.close();
                 }
             %>
 
+            <!-- 商品詳情 -->
             <section class="product-detail">
                 <div class="product-gallery">
                     <button class="prev">←</button>
-                        <img id="productImage" src="picture2/<%=pictureName%>" alt="日式布丁">
+                        <img id="productImage" src="picture2/日式布丁.jpg" alt="日式布丁">
                     <button class="next">→</button>
                 </div>
                 <h2 class="product-title"><%=productName%></h2>
-                <div class="product-info">
-                    <div class='null'></div>
-                    <p class="price">NT$ <%=productPrice%></p>
-                    <p class='quantity'>庫存：<%=quantity%></p>
-                </div>
+                <p class="price">NT$ <%=productPrice%></p>
                 <p class="description">
                     <%=productDescription%>
                 </p>
-                <div class="quantity-selector">
-                    <button class="quantity-decrease">-</button>
-                    <input type="number" min="1" value="1">
-                    <button class="quantity-increase">+</button>
-                </div>
-                <div class="product-actions">
-                    <button class="add-to-cart">加入購物車</button>
-                    <button class="add-to-favorites">
-                        <span class="heart">♡</span> 收藏商品
-                    </button>
-                </div>
-            </section>
-        </div>
+                <form action="<%= request.getContextPath() %>/addToCart.jsp" method="post">
+    <input type="hidden" name="ProductID" value="<%= productID %>">
+    <input type="hidden" name="ProductName" value="<%= productName %>">
+    <input type="hidden" name="ProductPrice" value="<%= productPrice %>">
+    <input type="hidden" name="ProductImage" value="<%= productImage %>">
+
+   
+    <div class="quantity-selector"> 數量：
+        <button type="button" class="quantity-decrease">-</button>
+        <input type="number" name="Quantity" min="1" value="1" required>
+        <button type="button" class="quantity-increase">+</button>
+    </div>
+
+    <div class="product-actions">
+        <button type="submit" class="add-to-cart">加入購物車</button>
+        <button type="button" class="add-to-favorites">
+            <span class="heart">♡</span> 收藏商品
+        </button>
+    </div>
+</form>
+
 
         <!-- 詳細內容與小分類頁 -->
         <section class="product-tabs">
@@ -166,8 +169,8 @@
             </div>
             <div class="tab-content" id="details">
                 <h3>商品詳細內容</h3>
-                <p><%=content1%></p>
-                <p><%=content2%></p>
+                <p>成分：牛奶、蛋、糖、香草精、焦糖（糖、黃油）</p>
+                <p>濃郁的牛奶與蛋混合製成奶香四溢的布丁，底部的焦糖增添了甜蜜的風味。</p>
             </div>
             <div class="tab-content" id="shipping" style="display: none;">
                 <h3>出貨與付款方式</h3>
@@ -221,7 +224,7 @@
         </section>
 
 
-        <!-- 推薦商品 -->
+        
         <section class="recommended-products">
             <h3>推薦商品</h3>
             <div class="recommendations">
