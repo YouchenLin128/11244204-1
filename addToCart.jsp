@@ -21,7 +21,21 @@
     }
 
     if(productId == null || productName == null || priceStr == null || quantityStr == null) {
-        out.println("缺少必要參數");
+        
+        if (productId == null) {
+            out.println("缺少參數：ProductID<br>");
+        }
+
+        if (productName == null) {
+            out.println("缺少參數：ProductName<br>");
+        }
+
+        if (priceStr == null) {
+            out.println("缺少參數：ProductPrice<br>");
+        }
+        if (quantityStr == null) {
+            out.println("缺少參數：Quantity<br>");
+        }
         return;
     }
 
