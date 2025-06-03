@@ -338,9 +338,10 @@
             </div>
         </section>
     </main>
-
+    
     <footer>
         <p>© 2024 月見甜舖 | 甜點讓生活更美好</p>
+
         <p>聯絡我們：<a href="mailto:contact@mooncakeshop.com">contact@mooncakeshop.com</a></p>
         
     </footer>
