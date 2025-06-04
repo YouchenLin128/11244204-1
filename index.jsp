@@ -3,6 +3,7 @@
 <!-- Step 0: import library --> 
 <%@ page import = "java.sql.*, java.util.*" %> 
 
+
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
@@ -12,7 +13,48 @@
     <script src="lin.js" defer></script> 
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
 </head>
+
+
+
 <body>
+    <!-- COOKIE -->
+    <div class="cookie1" id="cookie">
+        <p>COOKIE POLICY</p>
+        <p>為了提供您最佳的瀏覽體驗，本網站使用 Cookie。繼續瀏覽即表示您接受此設定。</p>
+        <button id='cookiebtn'>ACCEPT & CLOSE</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var cookieAcceptButton = document.getElementById('cookiebtn');
+            var cookieBox = document.getElementById('cookie'); 
+            
+            cookieAcceptButton.onclick = function() {
+                // 步驟一：立即隱藏彈出視窗，提供即時回饋
+                cookieBox.style.display = "none";
+
+                // 步驟二：向 JSP 頁面發送非同步請求來創建 Cookie
+                fetch('cookie.jsp', {
+                    method: 'POST' 
+                })
+                .then(response => {
+                    // 檢查 HTTP 響應是否成功 (例如 200 OK)
+                    if (response.ok) {
+                        console.log('cookie 創建請求已成功發送至 JSP。');
+                        // 在此處可以加入其他成功處理邏輯，例如通知用戶
+                    } else {
+                        console.error('cookie 創建請求失敗，HTTP 狀態碼:', response.status);
+                        // 在此處可以加入錯誤處理邏輯
+                    }
+                })
+                .catch(error => {
+                    // 處理網路錯誤，例如網路斷線或請求無法發送
+                    console.error('發送 cookie 創建請求時發生錯誤:', error);
+                });
+            };
+        });
+    </script>
+    
     <!-- 固定在頁面頂部的推播區域，包含訊息 -->
     <div class="ad-banner">
         <b>
@@ -338,6 +380,8 @@
             </div>
         </section>
     </main>
+    
+    
     
     <footer>
         <p>© 2024 月見甜舖 | 甜點讓生活更美好</p>

@@ -1,8 +1,8 @@
 const userDiv = document.getElementById('user');
 let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-userDiv.addEventListener('click', function() {
+userDiv.addEventListener('click', function () {
     if (isLoggedIn) {
-        window.location.href = 'account.html'; 
+        window.location.href = 'account.html';
     } else {
         window.location.href = 'enter.html';
     }
@@ -31,4 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("帳號或密碼錯誤，請重新輸入！");
         }
     });
+
 });
+
