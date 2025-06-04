@@ -1,68 +1,149 @@
 <%@ page import="java.sql.*, java.util.*, java.math.BigDecimal" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
+    String confirm = request.getParameter("confirm");
+    boolean purchaseSuccess = false;
 
-    // 連接資料庫並撈購物車資料
     String url = "jdbc:mysql://localhost:3306/work?useSSL=false&serverTimezone=UTC";
-    String user = "root";
-    String password = "1234";
-    Class.forName("com.mysql.cj.jdbc.Driver");
-    Connection conn = DriverManager.getConnection(url, user, password);
-
-    int userId = 1;  // 假設 user_id = 1
-    PreparedStatement ps = conn.prepareStatement("SELECT * FROM cart_items WHERE user_id = ?");
-    ps.setInt(1, userId);
-    ResultSet rs = ps.executeQuery();
-
-    List<Map<String, Object>> cartItems = new ArrayList<>();
-    BigDecimal total = new BigDecimal("0");
-    while(rs.next()) {
-        Map<String, Object> item = new HashMap<>();
-        item.put("id", rs.getInt("id"));
-        item.put("product_id", rs.getString("product_id"));
-        item.put("product_name", rs.getString("product_name"));
-        BigDecimal price = rs.getBigDecimal("product_price");
-        item.put("product_price", price);
-        int qty = rs.getInt("quantity");
-        item.put("quantity", qty);
-        item.put("product_image", rs.getString("product_image"));
-        cartItems.add(item);
-        BigDecimal subtotal = price.multiply(new BigDecimal(qty));
-        item.put("subtotal", subtotal); 
-
-        total = total.add(price.multiply(new BigDecimal(qty)));
-    }
-    rs.close();
-    ps.close();
+    String dbUser = "root";
+    String dbPassword = "1234";
+    Connection conn = null;
     
+
+    // 先宣告這些變數，讓下方能使用
+    List<Map<String, Object>> cartItems = new ArrayList<>();
+    BigDecimal total = BigDecimal.ZERO;
     BigDecimal discount = BigDecimal.ZERO;
     BigDecimal threshold = new BigDecimal("500");
     BigDecimal discountAmount = new BigDecimal("10");
+    BigDecimal finalTotal = BigDecimal.ZERO;
 
-    if (total.compareTo(threshold) >= 0) {
-        discount = discountAmount;
+    int userId = 1; // 假設固定 userId = 1
+Exception exception = null;
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        conn = DriverManager.getConnection(url, dbUser, dbPassword);
+
+        // 取出購物車商品
+        PreparedStatement ps = conn.prepareStatement(
+            "SELECT  ProductID, ProductName, Price, ProductImage, Quantity FROM cart_items WHERE UserID=?"
+        );
+        ps.setInt(1, userId);
+        ResultSet rs = ps.executeQuery();
+
+        while(rs.next()) {
+            Map<String, Object> item = new HashMap<>();
+            item.put("ProductID", rs.getString("ProductID"));
+            item.put("ProductName", rs.getString("ProductName"));
+            BigDecimal price = rs.getBigDecimal("Price");
+            item.put("Price", price);
+            int qty = rs.getInt("Quantity");
+            item.put("Quantity", qty);
+            item.put("ProductImage", rs.getString("ProductImage"));
+            BigDecimal subtotal = price.multiply(new BigDecimal(qty));
+            item.put("Subtotal", subtotal);
+            cartItems.add(item);
+            total = total.add(subtotal);
+        }
+        rs.close();
+        ps.close();
+
+        // 計算折扣
+        if (total.compareTo(threshold) >= 0) {
+            discount = discountAmount;
+        }
+
+        finalTotal = total.subtract(discount);
+
+        // 如果收到購買確認，且購物車不為空，執行購買流程
+        if ("yes".equals(confirm) && !cartItems.isEmpty()) {
+            Timestamp buyTime = new Timestamp(System.currentTimeMillis());
+    PreparedStatement orderStmt = conn.prepareStatement(
+        "INSERT INTO orders (UserID, finalTotal, buy_time) VALUES (?, ?, ?)",
+        Statement.RETURN_GENERATED_KEYS
+    );
+    orderStmt.setInt(1, userId);
+    orderStmt.setBigDecimal(2, finalTotal);
+    orderStmt.setTimestamp(3, buyTime);
+    orderStmt.executeUpdate();
+
+    // 取得自動產生的 OrderID
+    ResultSet generatedKeys = orderStmt.getGeneratedKeys();
+    int orderId = -1;
+    if (generatedKeys.next()) {
+        orderId = generatedKeys.getInt(1);
     }
+    orderStmt.close();
 
-    BigDecimal finalTotal = total.subtract(discount);
-    String confirm = request.getParameter("confirm");
-    boolean purchaseSuccess = false;
-    if ("yes".equals(confirm)) {
-        PreparedStatement insertPs = conn.prepareStatement(
-            "INSERT INTO final_price (user_id, finalprice) VALUES (?, ?)");
-        insertPs.setInt(1, userId);
-        insertPs.setBigDecimal(2, finalTotal);
-        insertPs.executeUpdate();
-        insertPs.close();
-         PreparedStatement clearCartStmt = conn.prepareStatement("DELETE FROM cart_items WHERE user_id = ?");
-    clearCartStmt.setInt(1, userId);
-    clearCartStmt.executeUpdate();
-    clearCartStmt.close();
+    // 再插入每個商品到 order_items
+    for (Map<String, Object> item : cartItems) {
+    // 插入到 order_items
+    PreparedStatement itemStmt = conn.prepareStatement(
+        "INSERT INTO order_items (OrderID, ProductID, ProductName, Quantity, Price, ProductImage) VALUES (?, ?, ?, ?, ?, ?)"
+    );
+    itemStmt.setInt(1, orderId);
+    itemStmt.setString(2, item.get("ProductID").toString());
+    itemStmt.setString(3, item.get("ProductName").toString());
+    itemStmt.setInt(4, (Integer) item.get("Quantity"));
+    itemStmt.setBigDecimal(5, (BigDecimal) item.get("Price"));
+    itemStmt.setString(6, item.get("ProductImage").toString());
+    itemStmt.executeUpdate();
+    itemStmt.close();
 
-    conn.close();
-    purchaseSuccess = true;
+    // 🔽 更新庫存
+    PreparedStatement updateStockStmt = conn.prepareStatement(
+        "UPDATE shop.product SET Stock = Stock - ? WHERE ProductID = ? AND Stock >= ?"
+    );
+    int qty = (Integer) item.get("Quantity");
+    updateStockStmt.setInt(1, qty);
+    updateStockStmt.setString(2, item.get("ProductID").toString());
+    updateStockStmt.setInt(3, qty);
+    int updatedRows = updateStockStmt.executeUpdate();
+    updateStockStmt.close();
+
+    if (updatedRows == 0) {
+        throw new SQLException("庫存不足，ProductID: " + item.get("ProductID"));
     }
-    conn.close();
+}
+
+    PreparedStatement clearCartStmt = conn.prepareStatement(
+                "DELETE FROM cart_items WHERE UserID=?"
+            );
+            clearCartStmt.setInt(1, userId);
+            clearCartStmt.executeUpdate();
+            clearCartStmt.close();
+
+            purchaseSuccess = true;
+            // 購買成功，清空 cartItems 和重算
+            cartItems.clear();
+            total = BigDecimal.ZERO;
+            discount = BigDecimal.ZERO;
+            finalTotal = BigDecimal.ZERO;
+        }
+
+
+            
+
+    } catch (Exception e) {
+        exception = e;
+        e.printStackTrace();
+    } finally {
+        if (conn != null) {
+            try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+        }
+    }
+    %>
+    <% if (exception != null) { %>
+    <div style="color: red; font-weight: bold;">
+        發生錯誤：<br />
+        <pre><%= exception.toString() %></pre>
+    </div>
+<% } 
+out.println("confirm = " + confirm);
 %>
+
+
+
 
 
 <!DOCTYPE html>
@@ -171,19 +252,23 @@
         <tbody>
         <% for (Map<String,Object> item : cartItems) { %>
             <tr>
-                <td><img src="<%= item.get("product_image") %>" alt="<%= item.get("product_name") %>" class="product-image"></td>
-                <td><%= item.get("product_name") %></td>
-                <td>$<%= item.get("product_price") %></td>
-                <td><%= item.get("quantity") %></td>
-                <td><%= item.get("subtotal") %></td>
+                <td><img src="<%= item.get("ProductImage") %>" alt="<%= item.get("ProductName") %>" class="product-image"></td>
+                <td><%= item.get("ProductName") %></td>
+                <td>$<%= item.get("Price") %></td>
+                <td><%= item.get("Quantity") %></td>
+                <td><%= item.get("Subtotal") %></td>
                 <td class="actions">
                     <form action="updateCart.jsp" method="post" style="display:inline;">
-                        <input type="hidden" name="id" value="<%= item.get("id") %>" />
+                        <input type="hidden" name="id" value="<%= item.get("OrderID") %>" />
+                       <input type="hidden" name="ProductImage" value="<%= item.get("ProductImage") %>">
+                       <input type="hidden" name="ProductID" value="<%= item.get("ProductID") %>" />
+                       <input type="hidden" name="userID" value="1" />
                         <button name="action" value="increase">+</button>
                         <button name="action" value="decrease">-</button>
                     </form>
                     <form action="deleteCart.jsp" method="post" style="display:inline;">
-                        <input type="hidden" name="id" value="<%= item.get("id") %>" />
+                        <input type="hidden" name="productID" value="<%= item.get("ProductID") %>" />
+                        <input type="hidden" name="userID" value="1" />
                         <button>移除</button>
                     </form>
                 </td>
@@ -191,6 +276,10 @@
         <% } %>
         </tbody>
         <tfoot>
+            <%
+out.println("目前購物車有 " + cartItems.size() + " 項商品。");
+%>
+
             <tr>
                 <td colspan="5" style="text-align: right;">總金額:</td>
                 <td>$<%= total %></td>
@@ -219,7 +308,7 @@
 </div>
 
 <% if (purchaseSuccess) { %>
-    <div class="success-msg" style="text-align: center;margin-top: 10px;color: red;">購買成功！3秒後回到首頁...</div>
+    <div class="success-msg" style="text-align: center;margin-top: 10px;color: green;">購買成功！3秒後回到首頁...</div>
     <script>
         setTimeout(function() {
             window.location.href = 'index.jsp';

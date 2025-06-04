@@ -2,47 +2,53 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%
-    // 資料庫連線參數
     String url = "jdbc:mysql://localhost:3306/work?useSSL=false&serverTimezone=UTC";
     String user = "root";
     String password = "1234";
     Class.forName("com.mysql.cj.jdbc.Driver");
     Connection conn = DriverManager.getConnection(url, user, password);
 
-    // 取得使用者操作
-    int itemId = Integer.parseInt(request.getParameter("id"));
-    String action = request.getParameter("action");
+    String userId = "1"; // 固定userId，實際請改為session取
 
-    // 查出原本的數量與價格
-    PreparedStatement selectStmt = conn.prepareStatement("SELECT quantity, product_price FROM cart_items WHERE id = ?");
-    selectStmt.setInt(1, itemId);
-    ResultSet rs = selectStmt.executeQuery();
+    String productId = request.getParameter("ProductID");
+    String action = request.getParameter("action"); // 取得增減操作
 
-    if (rs.next()) {
-        int quantity = rs.getInt("quantity");
-        BigDecimal price = rs.getBigDecimal("product_price");
-
-        if ("increase".equals(action)) {
-            quantity++;
-        } else if ("decrease".equals(action) && quantity > 1) {
-            quantity--;
-        }
-
-        BigDecimal subtotal = price.multiply(new BigDecimal(quantity));
-
-        // 更新數量與小計
-        PreparedStatement updateStmt = conn.prepareStatement(
-            "UPDATE cart_items SET quantity = ?, subtotal = ? WHERE id = ?"
+    if (productId != null && action != null) {
+        // 先撈出目前數量與價格
+        PreparedStatement psCheck = conn.prepareStatement(
+            "SELECT Quantity, Price FROM cart_items WHERE UserID=? AND ProductID=?"
         );
-        updateStmt.setInt(1, quantity);
-        updateStmt.setBigDecimal(2, subtotal);
-        updateStmt.setInt(3, itemId);
-        updateStmt.executeUpdate();
-        updateStmt.close();
-    }
+        psCheck.setString(1, userId);
+        psCheck.setString(2, productId);
+        ResultSet rs = psCheck.executeQuery();
 
-    rs.close();
-    selectStmt.close();
+        if (rs.next()) {
+            int oldQty = rs.getInt("Quantity");
+            BigDecimal price = rs.getBigDecimal("Price");
+
+            int newQty = oldQty;
+            if ("increase".equals(action)) {
+                newQty = oldQty + 1;
+            } else if ("decrease".equals(action)) {
+                newQty = oldQty - 1;
+                if (newQty < 1) newQty = 1; // 數量不得小於1
+            }
+
+            BigDecimal newSubtotal = price.multiply(new BigDecimal(newQty));
+
+            PreparedStatement psUpdate = conn.prepareStatement(
+                "UPDATE cart_items SET Quantity=?, Subtotal=? WHERE UserID=? AND ProductID=?"
+            );
+            psUpdate.setInt(1, newQty);
+            psUpdate.setBigDecimal(2, newSubtotal);
+            psUpdate.setString(3, userId);
+            psUpdate.setString(4, productId);
+            psUpdate.executeUpdate();
+            psUpdate.close();
+        }
+        rs.close();
+        psCheck.close();
+    }
     conn.close();
 
     response.sendRedirect("cart.jsp");
