@@ -17,7 +17,6 @@
     <div class="ad-banner">
         <b>
             <p>📣即日起至6/30，購買任何商品滿500元現折10元！</p>
-        </b>
     </div>
 
     <!-- header 區塊 -->
@@ -89,13 +88,17 @@
                 
                 </ul>
             </aside>
-            <%! 
-                String productID = ""; 
+
+            <!-- 商品詳情 -->
+            <%!
+                String productID = "";
                 String productName = "";
                 String productPrice = "";
                 String productDescription = "";
                 String content1 = "";
                 String content2 = "";
+                String stock = "";
+                String pictureName = "";
                 String productImage = "";
             %>
 
@@ -117,46 +120,54 @@
                         productDescription = pd.getString("Description");
                         content1 = pd.getString("Content1");
                         content2 = pd.getString("Content2");
-                        productImage = pd.getString("ProductImage");
+                        stock = pd.getString("Stock");
+                        pictureName = pd.getString("PictureName");
                         productID = pd.getString("ProductID");
+                        productImage = pd.getString("ProductImage");
                     }
                     pd.close();
                     con.close();
                 }
             %>
 
-            <!-- 商品詳情 -->
             <section class="product-detail">
                 <div class="product-gallery">
                     <button class="prev">←</button>
-                        <img id="productImage" src="picture2/羊羹.jpg" alt="羊羹">
+                        <img id="productImage" src="picture2/<%=pictureName%>" alt="羊羹">
                     <button class="next">→</button>
                 </div>
                 <h2 class="product-title"><%=productName%></h2>
-                <p class="price">NT$ <%=productPrice%></p>
+                <div class="product-info">
+                    <div class='null'></div>
+                    <p class="price">NT$ <%=productPrice%></p>
+                    <p class='quantity'>庫存：<%=stock%></p>
+                </div>
                 <p class="description">
+                
                     <%=productDescription%>
                 </p>
                 <form action="<%= request.getContextPath() %>/addToCart.jsp" method="post">
-    <input type="hidden" name="ProductID" value="<%= productID %>">
-    <input type="hidden" name="ProductName" value="<%= productName %>">
-    <input type="hidden" name="ProductPrice" value="<%= productPrice %>">
-    <input type="hidden" name="ProductImage" value="<%= productImage %>">
+                    <input type="hidden" name="ProductID" value="<%= productID %>">
+                    <input type="hidden" name="ProductName" value="<%= productName %>">
+                    <input type="hidden" name="ProductPrice" value="<%= productPrice %>">
+                    <input type="hidden" name="ProductImage" value="<%= productImage %>">
 
-   
-    <div class="quantity-selector"> 數量：
-        <button type="button" class="quantity-decrease">-</button>
-        <input type="number" name="Quantity" min="1" value="1" required>
-        <button type="button" class="quantity-increase">+</button>
-    </div>
+                
+                    <div class="quantity-selector"> 數量：
+                        <button type="button" class="quantity-decrease">-</button>
+                        <input type="number" name="Quantity" min="1" value="1" required>
+                        <button type="button" class="quantity-increase">+</button>
+                    </div>
 
-    <div class="product-actions">
-        <button type="submit" class="add-to-cart">加入購物車</button>
-        <button type="button" class="add-to-favorites">
-            <span class="heart">♡</span> 收藏商品
-        </button>
-    </div>
-</form>
+                    <div class="product-actions">
+                        <button type="submit" class="add-to-cart">加入購物車</button>
+                        <button type="button" class="add-to-favorites">
+                            <span class="heart">♡</span> 收藏商品
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
 
         <!-- 詳細內容與小分類頁 -->
         <section class="product-tabs">
@@ -168,8 +179,8 @@
             </div>
             <div class="tab-content" id="details">
                 <h3>商品詳細內容</h3>
-                <p>成分：紅豆餡（紅豆、糖）、寒天、糖</p>
-                <p>主要成分為紅豆和寒天，凝固後形成緻密的質地，糖分使得甜度適中。</p>
+                <p><%=content1%></p>
+                <p><%=content2%></p>
             </div>
             <div class="tab-content" id="shipping" style="display: none;">
                 <h3>出貨與付款方式</h3>

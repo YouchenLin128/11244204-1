@@ -8,7 +8,7 @@
     String productName = request.getParameter("product_name");
     String reviewContent = request.getParameter("review_content");
     int rating = Integer.parseInt(request.getParameter("rating"));
-    int productId = Integer.parseInt(request.getParameter("product_id")); // 轉為 int 以便驗證
+    int productId = Integer.parseInt(request.getParameter("product_id"));
 
     Connection conn = null;
     PreparedStatement pstmt = null;
@@ -17,9 +17,9 @@
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
 
-        // Step 1: 驗證 product_id 是否存在於 shop.product
+        // Step 1: 確認商品是否存在於 shop.product 中
         Connection shopConn = DriverManager.getConnection("jdbc:mysql://localhost/shop?serverTimezone=UTC", "root", "1234");
-        PreparedStatement checkProduct = shopConn.prepareStatement("SELECT productID FROM product WHERE id = ?");
+        PreparedStatement checkProduct = shopConn.prepareStatement("SELECT ProductID FROM product WHERE ProductID = ?");
         checkProduct.setInt(1, productId);
         ResultSet productCheck = checkProduct.executeQuery();
 
@@ -31,31 +31,31 @@
         checkProduct.close();
         shopConn.close();
 
-        // Step 2: 驗證該會員是否購買過此商品（在 work 資料庫中）
+        // Step 2: 查詢會員的 id（work.members 中）
         conn = DriverManager.getConnection("jdbc:mysql://localhost/work?serverTimezone=UTC", "root", "1234");
-
-        // 查找該會員的 member_id
-        PreparedStatement getMemberId = conn.prepareStatement("SELECT member_id FROM members WHERE member_name = ?");
+        PreparedStatement getMemberId = conn.prepareStatement("SELECT id FROM members WHERE realname = ?");
         getMemberId.setString(1, memberName);
         rs = getMemberId.executeQuery();
 
         int memberId = -1;
         if (rs.next()) {
-            memberId = rs.getInt("id");
+            memberId = rs.getInt("id"); // 正確主鍵欄位名稱
         } else {
             throw new Exception("⚠️ 找不到會員帳號，請重新登入。");
         }
         rs.close();
         getMemberId.close();
 
-        // 檢查是否曾購買該商品
+        // Step 3: 驗證是否購買過此商品（透過 orders 與 order_items 關聯）
+
         PreparedStatement checkPurchase = conn.prepareStatement(
-            "SELECT oi.product_id FROM orders o " +
-            "JOIN order_items oi ON o.order_id = oi.order_id " +
-            "WHERE o.member_id = ? AND oi.product_id = ?"
+        "SELECT oi.ProductID FROM orders o " +
+        "JOIN order_items oi ON o.OrderID = oi.OrderID " +
+        "WHERE o.UserID = ? AND oi.ProductID = ?"
         );
-        checkPurchase.setInt(1, memberId);
+        checkPurchase.setInt(1, memberId);  
         checkPurchase.setInt(2, productId);
+
         rs = checkPurchase.executeQuery();
 
         if (!rs.next()) {
@@ -68,12 +68,12 @@
             rs.close();
             checkPurchase.close();
             conn.close();
-            return; // 結束執行
+            return;
         }
         rs.close();
         checkPurchase.close();
 
-        // Step 3: 寫入評論資料
+        // Step 4: 新增評論資料到 reviews（work 資料庫）
         String insertSQL = "INSERT INTO reviews (member_name, product_id, product_name, review_content, rating, review_time) VALUES (?, ?, ?, ?, ?, NOW())";
         pstmt = conn.prepareStatement(insertSQL);
         pstmt.setString(1, memberName);

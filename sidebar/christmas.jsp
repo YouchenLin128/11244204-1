@@ -28,10 +28,10 @@
             <ul>
                 <li><a href="../index.jsp">首頁</a></li>
                 <li><a href="../about.html">關於我們</a></li>
-                <li><a href="../register.html">會員註冊</a></li>
-                <li><a href="../enter.html">會員登入</a></li>
-                <li><a href="../account.html">會員中心</a></li>
-                <li><a href="../shoppingcart.html">購物車</a></li>
+                <li><a href="../register.jsp">會員註冊</a></li>
+                <li><a href="../enter.jsp">會員登入</a></li>
+                <li><a href="../account.jsp">會員中心</a></li>
+                <li><a href="../cart.jsp">購物車</a></li>
             </ul>
         </nav>
     </header>
@@ -96,10 +96,11 @@
             <div class="product-grid">
                 <div class="product">
                     <a href="../products/snowman-daifuku.jsp">
+                        <img src="picture1/雪人大福.jpg" alt="雪人大福">
+
                         <%!
                             String productName = "";
                             String productPrice = "";
-                            String pictureName = "";
                         %>
 
                         <%
@@ -117,14 +118,11 @@
                                 if(gs.next()) {
                                     productName = gs.getString("ProductName");
                                     productPrice = gs.getString("Price");
-                                    pictureName = gs.getString("PictureName");
                                 }
                                 gs.close();
                                 con.close();
                             }
                         %>
-                        <img src="picture1/<%=pictureName%>" alt="雪人大福">
-                        
                         <p><%=productName%></p>
                         <p>價格: NT$<%=productPrice%></p>
                         
@@ -132,7 +130,8 @@
                 </div>
                 <div class="product">
                     <a href="../products/christmas-wagashi-gift-set.jsp">
-                        
+                        <img src="picture1/聖誕和菓子禮盒組.jpg" alt="聖誕和菓子禮盒組">
+
                         <%
                             // Step 1: 連接資料庫
                             Class.forName("com.mysql.jdbc.Driver");
@@ -148,15 +147,11 @@
                                 if(gs.next()) {
                                     productName = gs.getString("ProductName");
                                     productPrice = gs.getString("Price");
-                                    pictureName = gs.getString("PictureName");
                                 }
                                 gs.close();
                                 con.close();
                             }
                         %>
-
-                        <img src="picture1/<%=pictureName%>" alt="聖誕和菓子禮盒組">
-                        
                         <p><%=productName%></p>
                         <p>價格: NT$<%=productPrice%></p>
                         
@@ -164,7 +159,8 @@
                 </div>
                 <div class="product">
                     <a href="../products/christmas-party-dorayaki-with-cream.jsp">
-                        
+                        <img src="picture1/聖誕派對生乳銅鑼燒1.jpg" alt="聖誕派對生乳銅鑼燒">
+
                         <%
                             // Step 1: 連接資料庫
                             Class.forName("com.mysql.jdbc.Driver");
@@ -180,15 +176,11 @@
                                 if(gs.next()) {
                                     productName = gs.getString("ProductName");
                                     productPrice = gs.getString("Price");
-                                    pictureName = gs.getString("PictureName");
                                 }
                                 gs.close();
                                 con.close();
                             }
                         %>
-
-                        <img src="picture1/<%=pictureName%>" alt="聖誕派對生乳銅鑼燒">
-                        
                         <p><%=productName%></p>
                         <p>價格: NT$<%=productPrice%></p>
                         

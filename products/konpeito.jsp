@@ -25,7 +25,7 @@
         <h1>🌙月見甜舖</h1>
         <nav>
             <ul>
-                 <li><a href="../index.jsp">首頁</a></li>
+                <li><a href="../index.jsp">首頁</a></li>
                 <li><a href="../about.html">關於我們</a></li>
                 <li><a href="../register.jsp">會員註冊</a></li>
                 <li><a href="../enter.jsp">會員登入</a></li>
@@ -89,13 +89,17 @@
                 
                 </ul>
             </aside>
-            <%! 
-                String productID = ""; 
+
+            <!-- 商品詳情 -->
+            <%!
+                String productID = "";
                 String productName = "";
                 String productPrice = "";
                 String productDescription = "";
                 String content1 = "";
                 String content2 = "";
+                String stock = "";
+                String pictureName = "";
                 String productImage = "";
             %>
 
@@ -117,47 +121,53 @@
                         productDescription = pd.getString("Description");
                         content1 = pd.getString("Content1");
                         content2 = pd.getString("Content2");
-                        productImage = pd.getString("ProductImage");
+                        stock = pd.getString("Stock");
+                        pictureName = pd.getString("PictureName");
                         productID = pd.getString("ProductID");
+                        productImage = pd.getString("ProductImage");
                     }
                     pd.close();
                     con.close();
                 }
             %>
-
-            <!-- 商品詳情 -->
             <section class="product-detail">
                 <div class="product-gallery">
                     <button class="prev">←</button>
-                        <img id="productImage" src="picture2/金平糖.jpg" alt="金平糖">
+                        <img id="productImage" src="picture2/<%=pictureName%>" alt="金平糖">
                     <button class="next">→</button>
                 </div>
                 <h2 class="product-title"><%=productName%></h2>
-                <p class="price">NT$ <%=productPrice%></p>
+                <div class="product-info">
+                    <div class='null'></div>
+                    <p class="price">NT$ <%=productPrice%></p>
+                    <p class='quantity'>庫存：<%=stock%></p>
+                </div>
                 <p class="description">
+                
                     <%=productDescription%>
                 </p>
                 <form action="<%= request.getContextPath() %>/addToCart.jsp" method="post">
-    <input type="hidden" name="ProductID" value="<%= productID %>">
-    <input type="hidden" name="ProductName" value="<%= productName %>">
-    <input type="hidden" name="ProductPrice" value="<%= productPrice %>">
-    <input type="hidden" name="ProductImage" value="<%= productImage %>">
+                    <input type="hidden" name="ProductID" value="<%= productID %>">
+                    <input type="hidden" name="ProductName" value="<%= productName %>">
+                    <input type="hidden" name="ProductPrice" value="<%= productPrice %>">
+                    <input type="hidden" name="ProductImage" value="<%= productImage %>">
 
-   
-    <div class="quantity-selector"> 數量：
-        <button type="button" class="quantity-decrease">-</button>
-        <input type="number" name="Quantity" min="1" value="1" required>
-        <button type="button" class="quantity-increase">+</button>
-    </div>
+                
+                    <div class="quantity-selector"> 數量：
+                        <button type="button" class="quantity-decrease">-</button>
+                        <input type="number" name="Quantity" min="1" value="1" required>
+                        <button type="button" class="quantity-increase">+</button>
+                    </div>
 
-    <div class="product-actions">
-        <button type="submit" class="add-to-cart">加入購物車</button>
-        <button type="button" class="add-to-favorites">
-            <span class="heart">♡</span> 收藏商品
-        </button>
-    </div>
-</form>
-
+                    <div class="product-actions">
+                        <button type="submit" class="add-to-cart">加入購物車</button>
+                        <button type="button" class="add-to-favorites">
+                            <span class="heart">♡</span> 收藏商品
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
 
         <!-- 詳細內容與小分類頁 -->
         <section class="product-tabs">
@@ -169,8 +179,8 @@
             </div>
             <div class="tab-content" id="details">
                 <h3>商品詳細內容</h3>
-                <p>成分：糖、色素（天然）</p>
-                <p>金平糖由糖製成，經過多次滾動結晶形成多層糖晶，色彩繽紛，口感甜美。</p>
+                <p><%=content1%></p>
+                <p><%=content2%></p>
             </div>
             <div class="tab-content" id="shipping" style="display: none;">
                 <h3>出貨與付款方式</h3>
@@ -224,12 +234,6 @@
         </section>
 
 
-        <section class="recommended-products">
-            <h3>推薦商品</h3>
-            <div class="recommendations">
-                <!-- 這裡將由 JS 動態生成推薦商品 -->
-            </div>
-        </section>
 
         <script>
             document.querySelector('.add-to-cart').addEventListener('click', function () {

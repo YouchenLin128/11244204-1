@@ -26,10 +26,10 @@
             <ul>
                 <li><a href="../index.jsp">首頁</a></li>
                 <li><a href="../about.html">關於我們</a></li>
-                <li><a href="../register.html">會員註冊</a></li>
-                <li><a href="../enter.html">會員登入</a></li>
-                <li><a href="../account.html">會員中心</a></li>
-                <li><a href="../shoppingcart.html">購物車</a></li>
+                <li><a href="../register.jsp">會員註冊</a></li>
+                <li><a href="../enter.jsp">會員登入</a></li>
+                <li><a href="../account.jsp">會員中心</a></li>
+                <li><a href="../cart.jsp">購物車</a></li>
             </ul>
         </nav>
     </header>
@@ -93,10 +93,10 @@
             <div class="product-grid">
                 <div class="product">
                     <a href="../products/wagashi.jsp">
+                        <img src="picture1/和菓子.jpg" alt="和菓子">
                         <%!
                             String productName = "";
                             String productPrice = "";
-                            String pictureName = "";
                         %>
 
                         <%
@@ -114,20 +114,18 @@
                                 if(gs.next()) {
                                     productName = gs.getString("ProductName");
                                     productPrice = gs.getString("Price");
-                                    pictureName = gs.getString("PictureName");
                                 }
                                 gs.close();
                                 con.close();
                             }
                         %>
-                        <img src="picture1/<%=pictureName%>" alt="和菓子">
-                        
                         <p><%=productName%></p>
                         <p>價格: NT$<%=productPrice%></p>
                     </a>
                 </div>
                 <div class="product">
                     <a href="../products/pudding.jsp">
+                        <img src="picture1/日式布丁.jpg" alt="日式布丁">
                         <%
                             // Step 1: 連接資料庫
                             Class.forName("com.mysql.jdbc.Driver");
@@ -143,20 +141,18 @@
                                 if(gs.next()) {
                                     productName = gs.getString("ProductName");
                                     productPrice = gs.getString("Price");
-                                    pictureName = gs.getString("PictureName");
                                 }
                                 gs.close();
                                 con.close();
                             }
                         %>
-                        <img src="picture1/<%=pictureName%>" alt="日式布丁">
-                        
                         <p><%=productName%></p>
                         <p>價格: NT$<%=productPrice%></p>
                     </a>
                 </div>
                 <div class="product">
                     <a href="../products/water-cake.jsp">
+                        <img src="picture1/水信玄餅.jpg" alt="水信玄餅">
                         <%
                             // Step 1: 連接資料庫
                             Class.forName("com.mysql.jdbc.Driver");
@@ -172,20 +168,18 @@
                                 if(gs.next()) {
                                     productName = gs.getString("ProductName");
                                     productPrice = gs.getString("Price");
-                                    pictureName = gs.getString("PictureName");
                                 }
                                 gs.close();
                                 con.close();
                             }
                         %>
-                        <img src="picture1/<%=pictureName%>" alt="水信玄餅">
-                        
                         <p><%=productName%></p>
                         <p>價格: NT$<%=productPrice%></p>
                     </a>
                 </div>
                 <div class="product">
                     <a href="../products/dorayaki.jsp">
+                        <img src="picture1/銅鑼燒.jpg" alt="銅鑼燒">
                         <%
                             // Step 1: 連接資料庫
                             Class.forName("com.mysql.jdbc.Driver");
@@ -201,20 +195,18 @@
                                 if(gs.next()) {
                                     productName = gs.getString("ProductName");
                                     productPrice = gs.getString("Price");
-                                    pictureName = gs.getString("PictureName");
                                 }
                                 gs.close();
                                 con.close();
                             }
                         %>
-                        <img src="picture1/<%=pictureName%>" alt="銅鑼燒">
-                        
                         <p><%=productName%></p>
                         <p>價格: NT$<%=productPrice%></p>
                     </a>
                 </div>
                 <div class="product">
                     <a href="../products/yokan.jsp">
+                        <img src="picture1/羊羹.jpg" alt="羊羹">
                         <%
                             // Step 1: 連接資料庫
                             Class.forName("com.mysql.jdbc.Driver");
@@ -230,20 +222,18 @@
                                 if(gs.next()) {
                                     productName = gs.getString("ProductName");
                                     productPrice = gs.getString("Price");
-                                    pictureName = gs.getString("PictureName");
                                 }
                                 gs.close();
                                 con.close();
                             }
                         %>
-                        <img src="picture1/<%=pictureName%>" alt="羊羹">
-                        
                         <p><%=productName%></p>
                         <p>價格: NT$<%=productPrice%></p>
                     </a>
                 </div>
                 <div class="product">
                     <a href="../products/soy-sauce-dango.jsp">
+                        <img src="picture1/醬油糰子.jpg" alt="醬油糰子">
                         <%
                             // Step 1: 連接資料庫
                             Class.forName("com.mysql.jdbc.Driver");
@@ -259,20 +249,18 @@
                                 if(gs.next()) {
                                     productName = gs.getString("ProductName");
                                     productPrice = gs.getString("Price");
-                                    pictureName = gs.getString("PictureName");
                                 }
                                 gs.close();
                                 con.close();
                             }
                         %>
-                        <img src="picture1/<%=pictureName%>" alt="醬油糰子">
-                        
                         <p><%=productName%></p>
                         <p>價格: NT$<%=productPrice%></p>
                     </a>
                 </div>
                 <div class="product">
                     <a href="../products/warabi-mochi.jsp">
+                        <img src="picture1/蕨餅.jpg" alt="蕨餅">
                         <%
                             // Step 1: 連接資料庫
                             Class.forName("com.mysql.jdbc.Driver");
@@ -288,15 +276,11 @@
                                 if(gs.next()) {
                                     productName = gs.getString("ProductName");
                                     productPrice = gs.getString("Price");
-                                    pictureName = gs.getString("PictureName");
                                 }
                                 gs.close();
                                 con.close();
                             }
                         %>
-
-                        <img src="picture1/<%=pictureName%>" alt="蕨餅">
-                        
                         <p><%=productName%></p>
                         <p>價格: NT$<%=productPrice%></p>
                     </a>

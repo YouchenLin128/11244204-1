@@ -66,11 +66,11 @@
         <nav>
             <ul>
                 <li><a href="index.jsp">首頁</a></li>
-                    <li><a href="about.html">關於我們</a></li>
-                    <li><a href="register.jsp">會員註冊</a></li>
-                    <li><a href="enter.jsp">會員登入</a></li>
-                    <li><a href="account.jsp">會員中心</a></li>
-                    <li><a href="shoppingcart.html">購物車</a></li>
+                <li><a href="about.html">關於我們</a></li>
+                <li><a href="register.jsp">會員註冊</a></li>
+                <li><a href="enter.jsp">會員登入</a></li>
+                <li><a href="account.jsp">會員中心</a></li>
+                <li><a href="cart.jsp">購物車</a></li>
             </ul>
         </nav>
     </header>
@@ -338,9 +338,10 @@
             </div>
         </section>
     </main>
-
+    
     <footer>
         <p>© 2024 月見甜舖 | 甜點讓生活更美好</p>
+
         <p>聯絡我們：<a href="mailto:contact@mooncakeshop.com">contact@mooncakeshop.com</a></p>
         
     </footer>
