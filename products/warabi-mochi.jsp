@@ -192,44 +192,61 @@
                 <p>本商品需冷藏保存，避免高溫環境放置，請於收到商品後7天內食用完畢。</p>
             </div>
             <div class="tab-content" id="assess" style="display: none;">
-                <!-- 評論區塊 -->
                 <div class="reviews">
-                    <h3>顧客評論</h3>
-
-                    <!-- 現有評論 -->
+                    <h3>顧客評價</h3>
+                    <% List<String[]> reviewList = new ArrayList<>();
+                        try {
+                            int pid = Integer.parseInt(productID);
+                            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/work?serverTimezone=UTC", "root", "1234");
+                            String sql = "SELECT member_name, review_content, review_time, rating FROM reviews WHERE product_id = ? ORDER BY review_time DESC";
+                            PreparedStatement pstmt = conn.prepareStatement(sql);
+                            pstmt.setInt(1, pid);
+                            ResultSet rs = pstmt.executeQuery();
+                            while (rs.next()) {
+                                reviewList.add(new String[] {
+                                    rs.getString("member_name"),
+                                    rs.getString("review_content"),
+                                    rs.getString("review_time"),
+                                    String.valueOf(rs.getInt("rating"))
+                                });
+                            }
+                            rs.close();
+                            pstmt.close();
+                            conn.close();
+                        } catch (Exception e) {
+                            out.println("<p style='color:red;'>讀取評論失敗：" + e.getMessage() + "</p>");
+                            out.println("<p style='color:red;'>目前 productID 為：" + productID + "</p>");
+                        }
+                    %>
                     <div class="existing-reviews">
-                        <div class="review">
-                            <p><strong>小碩</strong></p>
-                            <p>⭐⭐⭐⭐⭐</p>
-                            <p>太好吃了，推薦！</p>
-                        </div>
-                        <div class="review">
-                            <p><strong>小哲</strong></p>
-                            <p>⭐⭐⭐⭐☆</p>
-                            <p>小孩很喜歡！已回購~</p>
-                        </div>
+                        <% if (reviewList.isEmpty()) { %>
+                            <p style="color:gray;">尚無評論，歡迎成為第一位評論者！</p>
+                        <% } else {
+                            for(String[] review : reviewList) { %>
+                                <div class="review">
+                                    <p><strong><%= review[0] %></strong> - 評分：<%= review[3] %>⭐</p>
+                                    <p style="color:gray; font-size: 13px;"><%= review[2] %></p>
+                                    <p><%= review[1] %></p>
+                                </div>
+                        <% } } %>
                     </div>
-
-                    <!-- 新增評論表單 -->
-                    <div class="add-review">
-                        <h4>新增評論</h4>
-                        <form id="review-form">
-                            <div class="rating">
-                                <label for="stars">給予評分：</label>
-                                <select id="stars" name="stars" required>
-                                    <option value="">選擇評分</option>
-                                    <option value="5">⭐⭐⭐⭐⭐</option>
-                                    <option value="4">⭐⭐⭐⭐☆</option>
-                                    <option value="3">⭐⭐⭐☆☆</option>
-                                    <option value="2">⭐⭐☆☆☆</option>
-                                    <option value="1">⭐☆☆☆☆</option>
-                                </select>
-                            </div>
-                            <textarea id="comment" name="comment" placeholder="請輸入您的評論" rows="4" required></textarea>
-                            <button type="submit">送出評論</button>
-                        </form>
+                    <form action="../submitReview.jsp" method="post">
+                        <input type="hidden" name="product_id" value="<%= productID %>">
+                        <input type="hidden" name="product_name" value="<%= productName %>">
+                        <input type="hidden" name="member_name" value="<%= session.getAttribute("username") != null ? session.getAttribute("username") : "訪客" %>">
+                        <label for="stars">給予評分：</label>
+                        <select name="rating" id="stars" required>
+                            <option value="">請選擇</option>
+                            <option value="5">⭐⭐⭐⭐⭐</option>
+                            <option value="4">⭐⭐⭐⭐</option>
+                            <option value="3">⭐⭐⭐</option>
+                            <option value="2">⭐⭐</option>
+                            <option value="1">⭐</option>
+                        </select>
+                        <textarea name="review_content" placeholder="請輸入您的評論" rows="4" required></textarea>
+                        <button type="submit">送出評論</button>
                         <p id="review-message" style="display: none; color: green;">評論已新增！</p>
-                    </div>
+                    </form>                    
                 </div>
             </div>
         </section>
