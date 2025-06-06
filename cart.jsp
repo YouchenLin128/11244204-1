@@ -2,6 +2,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
     String confirm = request.getParameter("confirm");
+    String recipientName = request.getParameter("RecipientName");
+    String recipientPhone = request.getParameter("RecipientPhone");
+    String recipientAddress = request.getParameter("RecipientAddress");
     boolean purchaseSuccess = false;
 
     String url = "jdbc:mysql://localhost:3306/work?useSSL=false&serverTimezone=UTC";
@@ -59,13 +62,16 @@ Exception exception = null;
         if ("yes".equals(confirm) && !cartItems.isEmpty()) {
             Timestamp buyTime = new Timestamp(System.currentTimeMillis());
     PreparedStatement orderStmt = conn.prepareStatement(
-        "INSERT INTO orders (UserID, finalTotal, buy_time) VALUES (?, ?, ?)",
+        "INSERT INTO orders (UserID, finalTotal, buy_time, RecipientName, RecipientPhone, RecipientAddress) VALUES (?, ?, ?, ?, ?, ?)",
         Statement.RETURN_GENERATED_KEYS
     );
-    orderStmt.setInt(1, userId);
-    orderStmt.setBigDecimal(2, finalTotal);
-    orderStmt.setTimestamp(3, buyTime);
-    orderStmt.executeUpdate();
+            orderStmt.setInt(1, userId);
+            orderStmt.setBigDecimal(2, finalTotal);
+            orderStmt.setTimestamp(3, buyTime);
+            orderStmt.setString(4, recipientName);
+            orderStmt.setString(5, recipientPhone);
+            orderStmt.setString(6, recipientAddress);
+            orderStmt.executeUpdate();
 
     // 取得自動產生的 OrderID
     ResultSet generatedKeys = orderStmt.getGeneratedKeys();
@@ -90,7 +96,7 @@ Exception exception = null;
     itemStmt.executeUpdate();
     itemStmt.close();
 
-    // 🔽 更新庫存
+    // 更新庫存
     PreparedStatement updateStockStmt = conn.prepareStatement(
         "UPDATE shop.product SET Stock = Stock - ? WHERE ProductID = ? AND Stock >= ?"
     );
@@ -297,15 +303,28 @@ out.println("目前購物車有 " + cartItems.size() + " 項商品。");
         </tfoot>
     </table>
     <%boolean isCartEmpty = cartItems.isEmpty();%>
-    <div style="text-align: right; margin-top: 20px;">
-    <form method="post">
-        <input type="hidden" name="confirm" value="yes" />
-        <button type="submit" class="button" style="margin-right: 70px;"<%= isCartEmpty ? "disabled" : "" %>>確認購買</button>
-    </form>
-     <% if (isCartEmpty) { %>
-        <p style="color:red;">購物車為空，無法購買。</p>
-    <% } %>
-</div>
+    <form method="post" onsubmit="return validateForm()">
+    <input type="hidden" name="confirm" value="yes" />
+    <div style="text-align:right; margin-right:70px;">
+        <label>收件人姓名: <input type="text" name="RecipientName" required></label><br>
+        <label>電話: <input type="text" name="RecipientPhone" required></label><br>
+        <label>地址: <input type="text" name="RecipientAddress" required></label><br><br>
+        <button type="submit" class="button"<%= isCartEmpty ? "disabled" : "" %>>確認購買</button>
+    </div>
+</form>
+
+<script>
+function validateForm() {
+    const name = document.querySelector('[RecipientName"]').value.trim();
+    const phone = document.querySelector('[name="RecipientPhone"]').value.trim();
+    const address = document.querySelector('[name="RecipientAddress"]').value.trim();
+    if (!name || !phone || !address) {
+        alert("請填寫完整收件人資訊！");
+        return false;
+    }
+    return true;
+}
+</script>
 
 <% if (purchaseSuccess) { %>
     <div class="success-msg" style="text-align: center;margin-top: 10px;color: green;">購買成功！3秒後回到首頁...</div>
