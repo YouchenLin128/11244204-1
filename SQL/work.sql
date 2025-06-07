@@ -148,6 +148,9 @@ CREATE TABLE `orders` (
   `id` int NOT NULL,
   `buy_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `finalTotal` int NOT NULL,
+  `RecipientName` varchar(100) DEFAULT NULL,
+  `RecipientPhone` varchar(45) DEFAULT NULL,
+  `RecipientAddress` varchar(225) DEFAULT NULL,
   PRIMARY KEY (`OrderID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
