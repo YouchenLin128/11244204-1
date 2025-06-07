@@ -21,7 +21,7 @@
     BigDecimal discountAmount = new BigDecimal("10");
     BigDecimal finalTotal = BigDecimal.ZERO;
 
-Integer id = (Integer) session.getAttribute("userId");
+Integer id = (Integer) session.getAttribute("id");
 if (id == null) {
     response.sendRedirect("enter.jsp");
     return;
@@ -29,7 +29,6 @@ if (id == null) {
 
 
 
-   
 Exception exception = null;
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -39,7 +38,7 @@ Exception exception = null;
         PreparedStatement ps = conn.prepareStatement(
             "SELECT  ProductID, ProductName, Price, ProductImage, Quantity FROM cart_items WHERE id=?"
         );
-        ps.setInt(1, id);
+        ps.setInt(1, id);  // 一定要加上這行！
         ResultSet rs = ps.executeQuery();
 
         while(rs.next()) {
@@ -272,14 +271,12 @@ out.println("confirm = " + confirm);
                 <td><%= item.get("Quantity") %></td>
                 <td><%= item.get("Subtotal") %></td>
                 <td class="actions">
-                    <form action="updateCart.jsp" method="post" style="display:inline;">
-                        <input type="hidden" name="id" value="<%= item.get("OrderID") %>" />
-                       <input type="hidden" name="ProductImage" value="<%= item.get("ProductImage") %>">
-                       <input type="hidden" name="ProductID" value="<%= item.get("ProductID") %>" />
-                       <input type="hidden" name="userID" value="<%= id %>" />
+                    <form action="updateCart.jsp" method="post">
+                        <input type="hidden" name="ProductID" value="<%= item.get("ProductID") %>" />
                         <button name="action" value="increase">+</button>
                         <button name="action" value="decrease">-</button>
                     </form>
+
                     <form action="deleteCart.jsp" method="post" style="display:inline;">
                         <input type="hidden" name="id" value="<%= id %>" />
                         <input type="hidden" name="productID" value="<%= item.get("ProductID") %>" />
@@ -344,5 +341,4 @@ function validateForm() {
 <% } %>
 </body>
 </html>
-
 
