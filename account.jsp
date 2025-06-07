@@ -1,12 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-    String username = (String) session.getAttribute("username");
-    String memberID = (String) session.getAttribute("memberID"); // 你可以自行決定命名
-    if (username == null) {
-        response.sendRedirect("enter.jsp"); // 如果沒登入，導回登入頁
+    String username = (String) session.getAttribute("realname");
+    Integer memberIDObject = (Integer) session.getAttribute("id");
+
+    if (username == null || memberIDObject == null) {
+        response.sendRedirect("enter.jsp");
         return;
     }
+
+    String memberID = String.valueOf(memberIDObject);
 %>
+
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -63,8 +67,8 @@
     <section style="background-color:  #f3e8d6;border-radius: 25px;">
         <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; padding-left: 20px; padding-top: 20px;">
             <div style="text-align: center;">
-                <a href="data.html"><img src="picture/user.png" style="width: 40px;"></a>
-                <div><a href="data.html">會員資料</a></div>
+                <a href="data.jsp"><img src="picture/user.png" style="width: 40px;"></a>
+                <div><a href="data.jsp">會員資料</a></div>
             </div>
             <div style="text-align: center;">
                 <a href="order.html"><img src="picture/checkout.png" style="width: 40px;"></a>

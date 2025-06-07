@@ -1,16 +1,15 @@
 <%@ page import="java.security.MessageDigest" %>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.sql.*" %>
-
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%!
-    // 用 Record Declaration 宣告方法，不能有 throws，自己處理例外
+    // 定義 hashPassword 方法，只寫一次
     public String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] bytes = md.digest(password.getBytes("UTF-8"));
             StringBuilder sb = new StringBuilder();
-            for(byte b : bytes) {
+            for (byte b : bytes) {
                 sb.append(String.format("%02x", b));
             }
             return sb.toString();
@@ -21,10 +20,18 @@
 %>
 
 <%
-    String email = request.getParameter("email").trim();
-    String rawPassword = request.getParameter("password").trim();
-    String password = hashPassword(rawPassword);
- // 管理者帳號判斷（不經過 hash 與資料庫）
+    String email = request.getParameter("email");
+    String rawPassword = request.getParameter("password");
+    
+    if (email == null || rawPassword == null || email.trim().isEmpty() || rawPassword.trim().isEmpty()) {
+        out.println("請輸入帳號及密碼！");
+        return;
+    }
+    
+    email = email.trim();
+    rawPassword = rawPassword.trim();
+
+    // 管理者帳號判斷（不經過 hash 與資料庫）
     if (email.equals("12345@gmail.com") && rawPassword.equals("12345")) {
         session.setAttribute("user", "管理者");
         session.setAttribute("isAdmin", true);
@@ -32,17 +39,15 @@
         return;
     }
 
-    //  一般會員登入（有 hash）
-
+    String password = hashPassword(rawPassword);
     if (password == null) {
         out.println("密碼加密錯誤！");
         return;
     }
 
-    // 以下資料庫連線、查詢代碼保持不變
     String url = "jdbc:mysql://localhost:3306/work?useUnicode=true&characterEncoding=UTF-8";
     String dbUser = "root";
-    String dbPassword = "1234";  
+    String dbPassword = "1234";
 
     Connection conn = null;
     PreparedStatement pstmt = null;
@@ -59,8 +64,9 @@
         rs = pstmt.executeQuery();
 
         if (rs.next()) {
-            session.setAttribute("username", rs.getString("realname"));
-            session.setAttribute("memberID", rs.getString("id"));  // 抓會員編號的話
+            session.setAttribute("realname", rs.getString("realname"));
+            session.setAttribute("id", rs.getInt("id")); 
+            session.setAttribute("member", email);
             response.sendRedirect("index.jsp");
         } else {
 %>

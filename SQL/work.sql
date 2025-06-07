@@ -84,6 +84,10 @@ CREATE TABLE `members` (
   `email` varchar(100) NOT NULL,
   `birthday` date NOT NULL,
   `password` varchar(255) NOT NULL,
+  `phone` VARCHAR(20),           -- 加入電話欄位
+  `city` VARCHAR(50),            -- 城市
+  `district` VARCHAR(50),        -- 區域
+  `road` VARCHAR(100),           -- 路段/詳細地址
   `role` enum('user','admin') NOT NULL DEFAULT 'user',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
@@ -95,10 +99,14 @@ CREATE TABLE `members` (
 --
 
 LOCK TABLES `members` WRITE;
-/*!40000 ALTER TABLE `members` DISABLE KEYS */;
-INSERT INTO `members` VALUES (1,'林','12345@gmail.com','2025-05-12','5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5','admin');
-/*!40000 ALTER TABLE `members` ENABLE KEYS */;
+
+INSERT INTO `members` (`id`, `realname`, `email`, `birthday`, `password`, `phone`, `city`, `district`, `road`, `role`)
+VALUES
+(1, '林', '12345@gmail.com', '2025-05-12', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5',
+ NULL, NULL, NULL, NULL, 'admin');
+
 UNLOCK TABLES;
+
 --
 -- Table structure for table `order_items`
 --
