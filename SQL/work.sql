@@ -57,7 +57,7 @@ CREATE TABLE `cart_items` (
   `Quantity` int DEFAULT NULL,
   `Subtotal` int NOT NULL,
   `ProductImage` varchar(255) NOT NULL,
-  PRIMARY KEY (`ProductID`,`UserID`)
+  PRIMARY KEY (`ProductID`,`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
