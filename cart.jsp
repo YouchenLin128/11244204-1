@@ -21,7 +21,15 @@
     BigDecimal discountAmount = new BigDecimal("10");
     BigDecimal finalTotal = BigDecimal.ZERO;
 
-    int userId = 1; // 假設固定 userId = 1
+Integer id = (Integer) session.getAttribute("userId");
+if (id == null) {
+    response.sendRedirect("enter.jsp");
+    return;
+}
+
+
+
+   
 Exception exception = null;
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -29,9 +37,9 @@ Exception exception = null;
 
         // 取出購物車商品
         PreparedStatement ps = conn.prepareStatement(
-            "SELECT  ProductID, ProductName, Price, ProductImage, Quantity FROM cart_items WHERE UserID=?"
+            "SELECT  ProductID, ProductName, Price, ProductImage, Quantity FROM cart_items WHERE id=?"
         );
-        ps.setInt(1, userId);
+        ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
 
         while(rs.next()) {
@@ -62,10 +70,10 @@ Exception exception = null;
         if ("yes".equals(confirm) && !cartItems.isEmpty()) {
             Timestamp buyTime = new Timestamp(System.currentTimeMillis());
     PreparedStatement orderStmt = conn.prepareStatement(
-        "INSERT INTO orders (UserID, finalTotal, buy_time, RecipientName, RecipientPhone, RecipientAddress) VALUES (?, ?, ?, ?, ?, ?)",
+        "INSERT INTO orders (id, finalTotal, buy_time, RecipientName, RecipientPhone, RecipientAddress) VALUES (?, ?, ?, ?, ?, ?)",
         Statement.RETURN_GENERATED_KEYS
     );
-            orderStmt.setInt(1, userId);
+            orderStmt.setInt(1, id);
             orderStmt.setBigDecimal(2, finalTotal);
             orderStmt.setTimestamp(3, buyTime);
             orderStmt.setString(4, recipientName);
@@ -113,9 +121,9 @@ Exception exception = null;
 }
 
     PreparedStatement clearCartStmt = conn.prepareStatement(
-                "DELETE FROM cart_items WHERE UserID=?"
+                "DELETE FROM cart_items WHERE id=?"
             );
-            clearCartStmt.setInt(1, userId);
+            clearCartStmt.setInt(1, id);
             clearCartStmt.executeUpdate();
             clearCartStmt.close();
 
@@ -268,7 +276,7 @@ out.println("confirm = " + confirm);
                         <input type="hidden" name="id" value="<%= item.get("OrderID") %>" />
                        <input type="hidden" name="ProductImage" value="<%= item.get("ProductImage") %>">
                        <input type="hidden" name="ProductID" value="<%= item.get("ProductID") %>" />
-                       <input type="hidden" name="userID" value="1" />
+                       <input type="hidden" name="userID" value="<%= id %>" />
                         <button name="action" value="increase">+</button>
                         <button name="action" value="decrease">-</button>
                     </form>
@@ -315,7 +323,7 @@ out.println("目前購物車有 " + cartItems.size() + " 項商品。");
 
 <script>
 function validateForm() {
-    const name = document.querySelector('[RecipientName"]').value.trim();
+    const name = document.querySelector('[name="RecipientName"]').value.trim();
     const phone = document.querySelector('[name="RecipientPhone"]').value.trim();
     const address = document.querySelector('[name="RecipientAddress"]').value.trim();
     if (!name || !phone || !address) {
@@ -336,3 +344,4 @@ function validateForm() {
 <% } %>
 </body>
 </html>
+
