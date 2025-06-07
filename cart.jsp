@@ -281,8 +281,8 @@ out.println("confirm = " + confirm);
                         <button name="action" value="decrease">-</button>
                     </form>
                     <form action="deleteCart.jsp" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="<%= id %>" />
                         <input type="hidden" name="productID" value="<%= item.get("ProductID") %>" />
-                        <input type="hidden" name="userID" value="1" />
                         <button>移除</button>
                     </form>
                 </td>
@@ -344,4 +344,5 @@ function validateForm() {
 <% } %>
 </body>
 </html>
+
 
