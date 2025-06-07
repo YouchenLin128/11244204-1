@@ -1,1 +1,0 @@
-SELECT * FROM desert_shop.reviews;
