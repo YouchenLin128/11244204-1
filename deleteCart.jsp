@@ -1,48 +1,30 @@
 <%@ page import="java.sql.*" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    String productId = request.getParameter("productID");
-    String idStr = request.getParameter("id");
+Integer id = (Integer) session.getAttribute("id");
+if (id == null) {
+    response.sendRedirect("enter.jsp");
+    return;
+}
 
-    out.println("收到的 productID=" + productId + "<br>");
-    out.println("收到的 id=" + idStr + "<br>");
+String productId = request.getParameter("productID");
 
-    if (productId == null || productId.trim().isEmpty()) {
-        out.println("錯誤：缺少 productID");
-        return;
-    }
-    if (idStr == null || idStr.trim().isEmpty()) {
-        out.println("錯誤：缺少 id");
-        return;
-    }
-
-    int id = Integer.parseInt(idStr); // 這是使用者ID
-
+if (productId != null) {
+    Connection conn = null;
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        String url = "jdbc:mysql://localhost:3306/work?useSSL=false&serverTimezone=UTC";
-        String user = "root";
-        String password = "1234";
-        Connection conn = DriverManager.getConnection(url, user, password);
+        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/work?useSSL=false&serverTimezone=UTC", "root", "1234");
 
-        String sql = "DELETE FROM cart_items WHERE id = ? AND ProductID = ?";
-        PreparedStatement ps = conn.prepareStatement(sql);
+        PreparedStatement ps = conn.prepareStatement("DELETE FROM cart_items WHERE id = ? AND ProductID = ?");
         ps.setInt(1, id);
         ps.setString(2, productId);
-
-        int rows = ps.executeUpdate();
+        ps.executeUpdate();
         ps.close();
-        conn.close();
-
-        out.println("刪除影響行數：" + rows + "<br>");
-
-        if (rows > 0) {
-            response.sendRedirect("cart.jsp");
-        } else {
-            out.println("找不到指定商品，刪除失敗");
-        }
 
     } catch (Exception e) {
-        out.println("刪除錯誤：" + e.getMessage());
+        e.printStackTrace();
+    } finally {
+        if (conn != null) conn.close();
     }
+}
+response.sendRedirect("cart.jsp");
 %>
