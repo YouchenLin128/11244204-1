@@ -2,8 +2,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     request.setCharacterEncoding("UTF-8");
-Integer userId = (Integer) session.getAttribute("userId");
-if (userId == null) {
+Integer id = (Integer) session.getAttribute("id");
+if (id == null) {
     response.sendRedirect("enter.jsp");
     return;
 }
@@ -74,7 +74,7 @@ if (userId == null) {
             // 這裡用假設先插入 cart_items 且讓 OrderID 自動生成 (若有設計 auto_increment)
             sql = "INSERT INTO cart_items (id, ProductID, ProductName, Price, Quantity, Subtotal, ProductImage) VALUES (?, ?, ?, ?, ?, ?, ?)";
             pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setInt(1, userId);
+            pstmt.setInt(1, id);
             pstmt.setString(2, productId);
             pstmt.setString(3, productName);
             pstmt.setDouble(4, price);
@@ -99,7 +99,7 @@ if (userId == null) {
             sql = "INSERT INTO cart_items (id, ProductID, ProductName, Price, Quantity, Subtotal, ProductImage) VALUES (?, ?, ?, ?, ?, ?, ?)";
             pstmt = conn.prepareStatement(sql);
             
-            pstmt.setInt(1, userId);
+            pstmt.setInt(1, id);
             pstmt.setString(2, productId);
             pstmt.setString(3, productName);
             pstmt.setDouble(4, price);
