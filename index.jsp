@@ -114,6 +114,10 @@
                 <li><a href="account.jsp">會員中心</a></li>
                 <li><a href="cart.jsp">購物車</a></li>
             </ul>
+            <form action="search.jsp" method="get" class="search-bar">
+                <input type="text" name="query" placeholder="搜尋商品..." required>
+                <button type="submit">🔍</button>
+            </form>            
         </nav>
     </header>
 

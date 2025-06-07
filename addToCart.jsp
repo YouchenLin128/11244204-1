@@ -2,6 +2,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     request.setCharacterEncoding("UTF-8");
+Integer userId = (Integer) session.getAttribute("userId");
+if (userId == null) {
+    response.sendRedirect("enter.jsp");
+    return;
+}
 
     String productId = request.getParameter("ProductID");
     String productName = request.getParameter("ProductName");
@@ -50,7 +55,8 @@
     }
 
     double subtotal = price * quantity;
-    int userId = 1; // 假設使用者ID固定
+    
+
 
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -66,7 +72,7 @@
             // 第一次加入商品，先插入沒有 OrderID 的紀錄（假設資料表允許 OrderID NULL 或是先不帶）
             // 或是先插入訂單主表取得新 OrderID，再加入明細（較好設計）
             // 這裡用假設先插入 cart_items 且讓 OrderID 自動生成 (若有設計 auto_increment)
-            sql = "INSERT INTO cart_items (UserID, ProductID, ProductName, Price, Quantity, Subtotal, ProductImage) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            sql = "INSERT INTO cart_items (id, ProductID, ProductName, Price, Quantity, Subtotal, ProductImage) VALUES (?, ?, ?, ?, ?, ?, ?)";
             pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pstmt.setInt(1, userId);
             pstmt.setString(2, productId);
@@ -90,7 +96,7 @@
 
         } else {
             // 已有 orderId ，使用同一訂單號插入
-            sql = "INSERT INTO cart_items (UserID, ProductID, ProductName, Price, Quantity, Subtotal, ProductImage) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            sql = "INSERT INTO cart_items (id, ProductID, ProductName, Price, Quantity, Subtotal, ProductImage) VALUES (?, ?, ?, ?, ?, ?, ?)";
             pstmt = conn.prepareStatement(sql);
             
             pstmt.setInt(1, userId);

@@ -2,13 +2,19 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%
+Integer userId = (Integer) session.getAttribute("userId");
+if (userId == null) {
+    response.sendRedirect("enter.jsp");
+    return;
+}
+
     String url = "jdbc:mysql://localhost:3306/work?useSSL=false&serverTimezone=UTC";
     String user = "root";
     String password = "1234";
     Class.forName("com.mysql.cj.jdbc.Driver");
     Connection conn = DriverManager.getConnection(url, user, password);
 
-    String userId = "1"; // 固定userId，實際請改為session取
+    
 
     String productId = request.getParameter("ProductID");
     String action = request.getParameter("action"); // 取得增減操作
@@ -16,9 +22,9 @@
     if (productId != null && action != null) {
         // 先撈出目前數量與價格
         PreparedStatement psCheck = conn.prepareStatement(
-            "SELECT Quantity, Price FROM cart_items WHERE UserID=? AND ProductID=?"
+            "SELECT Quantity, Price FROM cart_items WHERE id=? AND ProductID=?"
         );
-        psCheck.setString(1, userId);
+        psCheck.setInt(1, userId);
         psCheck.setString(2, productId);
         ResultSet rs = psCheck.executeQuery();
 
@@ -37,11 +43,11 @@
             BigDecimal newSubtotal = price.multiply(new BigDecimal(newQty));
 
             PreparedStatement psUpdate = conn.prepareStatement(
-                "UPDATE cart_items SET Quantity=?, Subtotal=? WHERE UserID=? AND ProductID=?"
+                "UPDATE cart_items SET Quantity=?, Subtotal=? WHERE id=? AND ProductID=?"
             );
             psUpdate.setInt(1, newQty);
             psUpdate.setBigDecimal(2, newSubtotal);
-            psUpdate.setString(3, userId);
+            psUpdate.setInt(3, userId);
             psUpdate.setString(4, productId);
             psUpdate.executeUpdate();
             psUpdate.close();
@@ -53,3 +59,4 @@
 
     response.sendRedirect("cart.jsp");
 %>
+

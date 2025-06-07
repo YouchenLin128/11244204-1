@@ -2,21 +2,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String productId = request.getParameter("productID");
-    String userIdStr = request.getParameter("userID");
+    String idStr = request.getParameter("id");
 
     out.println("收到的 productID=" + productId + "<br>");
-    out.println("收到的 userID=" + userIdStr + "<br>");
+    out.println("收到的 id=" + idStr + "<br>");
 
     if (productId == null || productId.trim().isEmpty()) {
         out.println("錯誤：缺少 productID");
         return;
     }
-    if (userIdStr == null || userIdStr.trim().isEmpty()) {
-        out.println("錯誤：缺少 userID");
+    if (idStr == null || idStr.trim().isEmpty()) {
+        out.println("錯誤：缺少 id");
         return;
     }
 
-    int userId = Integer.parseInt(userIdStr);
+    int id = Integer.parseInt(idStr); // 這是使用者ID
 
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -25,9 +25,9 @@
         String password = "1234";
         Connection conn = DriverManager.getConnection(url, user, password);
 
-        String sql = "DELETE FROM cart_items WHERE UserID=? AND ProductID=?";
+        String sql = "DELETE FROM cart_items WHERE id = ? AND ProductID = ?";
         PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setInt(1, userId);
+        ps.setInt(1, id);
         ps.setString(2, productId);
 
         int rows = ps.executeUpdate();
