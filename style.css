@@ -364,8 +364,6 @@ footer {
     }
 }
 
-
-
 #cookie {
     position: fixed;
     bottom: 30px;
@@ -409,5 +407,38 @@ footer {
 }
 
 #cookie button:hover {
+    background-color: #d89045;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.search-bar input[type="text"] {
+    padding: 6px 10px;
+    border: 1px solid #c2a78d;
+    border-radius: 6px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    background-color: #fdfbf7;
+    color: #5e4f45;
+}
+
+.search-bar button {
+    padding: 6px 10px;
+    margin-left: 5px;
+    background-color: #e8a35d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
     background-color: #d89045;
 }
