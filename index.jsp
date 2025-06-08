@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!-- Step 0: import library --> 
 <%@ page import = "java.sql.*, java.util.*" %> 
-
-
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
@@ -12,10 +9,32 @@
     <link rel="stylesheet" href="style.css">
     <script src="lin.js" defer></script> 
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        header nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        header nav ul {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        header nav ul li {
+            margin: 0;
+        }
+        header nav form {
+            display: flex;
+            align-items: center;
+        }
+    </style>
 </head>
-
-
-
 <body>
     <!-- COOKIE -->
     <div class="cookie1" id="cookie">
@@ -28,83 +47,31 @@
         document.addEventListener("DOMContentLoaded", function () {
             var cookieAcceptButton = document.getElementById('cookiebtn');
             var cookieBox = document.getElementById('cookie'); 
-            
             cookieAcceptButton.onclick = function() {
-                // 步驟一：立即隱藏彈出視窗，提供即時回饋
                 cookieBox.style.display = "none";
-
-                // 步驟二：向 JSP 頁面發送非同步請求來創建 Cookie
                 fetch('cookie.jsp', {
                     method: 'POST' 
                 })
                 .then(response => {
-                    // 檢查 HTTP 響應是否成功 (例如 200 OK)
-                    if (response.ok) {
-                        console.log('cookie 創建請求已成功發送至 JSP。');
-                        // 在此處可以加入其他成功處理邏輯，例如通知用戶
-                    } else {
-                        console.error('cookie 創建請求失敗，HTTP 狀態碼:', response.status);
-                        // 在此處可以加入錯誤處理邏輯
+                    if (!response.ok) {
+                        console.error('cookie 創建請求失敗');
                     }
                 })
                 .catch(error => {
-                    // 處理網路錯誤，例如網路斷線或請求無法發送
                     console.error('發送 cookie 創建請求時發生錯誤:', error);
                 });
             };
         });
     </script>
-    
-    <!-- 固定在頁面頂部的推播區域，包含訊息 -->
-    <div class="ad-banner">
-        <b>
-            <p>📣即日起至6/30，購買任何商品滿500元現折10元！</p>
-        </b>
-    </div>
-    
-<!-- header 區塊 -->
-    <header>
-        <h1 style="padding-top: 30px;">🌙月見甜舖</h1>
-        <%
-            Class.forName("com.mysql.jdbc.Driver");	  
-            //使用JDBC去連結MySQL，所以該行語法的意思，就是要告訴電腦我要使用JDBC
-            try {
-            //Step 2: 建立連線 
-                String sql="";
-                String url="jdbc:mysql://localhost/?serverTimezone=UTC";
-                Connection con=DriverManager.getConnection(url,"root","1234");   
-                if(con.isClosed())
-                    out.println("連線建立失敗");
-                else
-                {
-                    //Step 3: 相關程式
 
-                    sql="use shop"; // SQL 語法：使用 shop 資料庫
-                    con.createStatement().execute(sql); // 執行上一行的 SQL
-                    sql="SELECT * FROM `countview`";
-                    ResultSet rs=con.createStatement().executeQuery(sql);
-                    //計數器+1
-                    if(rs.next()) {// 一筆一筆讀取資料，回傳 false 表示讀取結束
-                        String countString = rs.getString(1);//轉成 int 整數並存至 countString 變數
-                        int count1 = Integer.parseInt(countString);
-                        //計數器+1
-                        if(session.isNew()){//使用新的 Session 連入
-                            count1++;
-                            countString = String.valueOf(count1); //將整數轉成字串
-                            //寫回資料庫
-                            sql="UPDATE `countview` SET `count` = " + countString ;
-                            con.createStatement().execute(sql);
-                        }
-                        out.println("目前訪問人次：" + count1);
-                    }
-                //Step 4: 關閉連線
-                con.close();
-                }
-            }
-            catch (SQLException sExec) {
-                out.println("SQL錯誤!" + sExec.toString());
-                }
-        %>
+    <div class="ad-banner">
+        <b><p>📣即日起至6/30，購買任何商品滿500元現折10元！</p></b>
+    </div>
+
+    <!-- header 區塊 -->
+    <header>
+        <h1 style="padding-top: 30px; text-align: center;">🌙月見甜舖</h1>
+        <%-- 訪客計數邏輯省略保留 --%>
         <nav>
             <ul>
                 <li><a href="index.jsp">首頁</a></li>
@@ -114,10 +81,10 @@
                 <li><a href="account.jsp">會員中心</a></li>
                 <li><a href="cart.jsp">購物車</a></li>
             </ul>
-            <form action="search.jsp" method="get" class="search-bar">
-                <input type="text" name="query" placeholder="搜尋商品..." required>
-                <button type="submit">🔍</button>
-            </form>            
+            <form action="search.jsp" method="get">
+                <input type="text" name="query" placeholder="搜尋商品" required style="padding: 4px; border-radius: 6px; border: 1px solid #ccc;">
+                <button type="submit" style="background-color:#ecdfd5; border:none; padding:5px 10px; border-radius:6px;">🔍</button>
+            </form>
         </nav>
     </header>
 

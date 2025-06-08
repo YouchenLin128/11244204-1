@@ -410,6 +410,20 @@ footer {
     background-color: #d89045;
 }
 
+header nav ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px; /* 控制每個項目之間的間距 */
+    flex-wrap: wrap;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
 .search-bar {
     display: flex;
     align-items: center;
