@@ -72,6 +72,45 @@
     <header>
         <h1 style="padding-top: 30px; text-align: center;">🌙月見甜舖</h1>
         <%-- 訪客計數邏輯省略保留 --%>
+        <%
+            Class.forName("com.mysql.jdbc.Driver");	  
+            
+            try {
+                String sql="";
+                String url="jdbc:mysql://localhost/?serverTimezone=UTC";
+                Connection con=DriverManager.getConnection(url,"root","1234");   
+                if(con.isClosed())
+                    out.println("連線建立失敗");
+                else
+                {
+                    sql="use shop"; // 使用 shop 資料庫
+                    con.createStatement().execute(sql); // 執行上一行的 SQL
+                    sql="SELECT * FROM `countview`";
+                    ResultSet rs=con.createStatement().executeQuery(sql);
+                    //計數器+1
+                    if(rs.next()) {// 回傳 false 表示讀取結束
+                        String countString = rs.getString(1);//轉成 int 整數並存至 countString 變數
+                        int count1 = Integer.parseInt(countString);
+                        
+                        //計數器+1
+                        if(session.isNew()){
+                            count1++;
+                            countString = String.valueOf(count1); //將整數轉成字串
+
+                            //寫回資料庫
+                            sql="UPDATE `countview` SET `count` = " + countString ;
+                            con.createStatement().execute(sql);
+                        }
+                        out.println("目前訪問人次：" + count1);
+                    }
+                //關閉連線
+                con.close();
+                }
+            }
+            catch (SQLException sExec) {
+                out.println("SQL錯誤!" + sExec.toString());
+                }
+        %>
         <nav>
             <ul>
                 <li><a href="index.jsp">首頁</a></li>
