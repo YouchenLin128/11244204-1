@@ -47,14 +47,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `cart_items`;
 
-CREATE TABLE cart_items (
-  id int NOT NULL,
-  ProductID varchar(50) NOT NULL,
-  ProductName varchar(255) DEFAULT NULL,
-  Price int DEFAULT NULL,
-  Quantity int DEFAULT NULL,
-  Subtotal int NOT NULL,
-  ProductImage varchar(255) NOT NULL,
+CREATE TABLE `cart_items` (
+  `id` int NOT NULL,
+  `ProductID` varchar(50) NOT NULL,
+  `ProductName` varchar(255) DEFAULT NULL,
+  `Price` int DEFAULT NULL,
+  `Quantity` int DEFAULT NULL,
+  `Subtotal` int NOT NULL,
+  `ProductImage` varchar(255) NOT NULL,
   PRIMARY KEY (`ProductID`,`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
