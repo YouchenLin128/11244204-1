@@ -48,7 +48,7 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `cart_items`;
 
 CREATE TABLE `cart_items` (
-  `UserID` int NOT NULL,
+  `id` int NOT NULL,
   `ProductID` varchar(50) NOT NULL,
   `ProductName` varchar(255) DEFAULT NULL,
   `Price` int DEFAULT NULL,
