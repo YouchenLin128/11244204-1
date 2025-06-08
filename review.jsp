@@ -83,7 +83,7 @@
         while(rs.next()){
             String member = rs.getString("member_name");
             String product = rs.getString("product_name");
-            String content = rs.getString("content");
+            String content = rs.getString("review_content");
             String time = rs.getString("review_time");
             String productImg = rs.getString("product_image");
             String profileImg = rs.getString("profile_image");

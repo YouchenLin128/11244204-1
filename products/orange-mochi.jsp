@@ -231,7 +231,11 @@
                     <form action="../submitReview.jsp" method="post">
                         <input type="hidden" name="product_id" value="<%= productID %>">
                         <input type="hidden" name="product_name" value="<%= productName %>">
-                        <input type="hidden" name="member_name" value="<%= session.getAttribute("username") != null ? session.getAttribute("username") : "訪客" %>">
+                        <input type="hidden" name="total_price" value="<%= productPrice %>">
+                    
+                        <label>您的名稱：</label>
+                        <input type="text" name="member_name" placeholder="訪客" />
+                    
                         <label for="stars">給予評分：</label>
                         <select name="rating" id="stars" required>
                             <option value="">請選擇</option>
@@ -241,9 +245,9 @@
                             <option value="2">⭐⭐</option>
                             <option value="1">⭐</option>
                         </select>
+                    
                         <textarea name="review_content" placeholder="請輸入您的評論" rows="4" required></textarea>
                         <button type="submit">送出評論</button>
-                        <p id="review-message" style="display: none; color: green;">評論已新增！</p>
                     </form>                    
                 </div>
             </div>
