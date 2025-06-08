@@ -132,7 +132,7 @@ CREATE TABLE `order_items` (
 
 LOCK TABLES `order_items` WRITE;
 /*!40000 ALTER TABLE `order_items` DISABLE KEYS */;
-INSERT INTO `order_items` (`OrderItemID`, `OrderID`, `ProductID`, `Quantity`, `Price`, `ProductName`, `ProductImage`) VALUES (1,2,'15',3,80.00,'栗子饅頭',products/picture2/栗子饅頭.jpg)
+INSERT INTO `order_items` (`OrderItemID`, `OrderID`, `ProductID`, `Quantity`, `Price`, `ProductName`, `ProductImage`) VALUES (1,2,'15',3,80.00,'栗子饅頭',products/picture2/栗子饅頭.jpg)；
 
 --
 -- Table structure for table `orders`
