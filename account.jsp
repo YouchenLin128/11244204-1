@@ -71,8 +71,8 @@
                 <div><a href="data.jsp">會員資料</a></div>
             </div>
             <div style="text-align: center;">
-                <a href="order.html"><img src="picture/checkout.png" style="width: 40px;"></a>
-                <div><a href="order.html">購買紀錄</a></div>
+                <a href="order.jsp"><img src="picture/checkout.png" style="width: 40px;"></a>
+                <div><a href="order.jsp">購買紀錄</a></div>
             </div>
             <div style="text-align: center;">
                 <a href="comment.html"><img src="picture/check-list.png" style="width: 40px;"></a>
