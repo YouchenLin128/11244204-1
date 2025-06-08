@@ -40,7 +40,7 @@
         </form>
     </div>
 
-    <section style="display: flex; align-items: center; justify-content: space-between; padding-right: 200px;">
+    <section style="display: flex; align-items: center; justify-content: space-between; padding-right: 200px; padding-bottom: 20px; min-height: 200px;">
         <div style="display: flex; align-items: center;">
             <img style="border-radius: 50%;" src="picture/usigi.jpg" width="150px" alt="Profile Picture">
             <div style="display: flex; flex-direction: column; padding-left: 20px;font-size: large;">
@@ -64,8 +64,8 @@
     </section>
 
     <!-- 其他會員功能按鈕（資料、訂單、評價...） -->
-    <section style="background-color:  #f3e8d6;border-radius: 25px;">
-        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; padding-left: 20px; padding-top: 20px;">
+    <section style="background-color:  #f3e8d6;border-radius: 25px;;">
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 20px;">
             <div style="text-align: center;">
                 <a href="data.jsp"><img src="picture/user.png" style="width: 40px;"></a>
                 <div><a href="data.jsp">會員資料</a></div>
@@ -74,10 +74,7 @@
                 <a href="order.jsp"><img src="picture/checkout.png" style="width: 40px;"></a>
                 <div><a href="order.jsp">購買紀錄</a></div>
             </div>
-            <div style="text-align: center;">
-                <a href="comment.html"><img src="picture/check-list.png" style="width: 40px;"></a>
-                <div><a href="comment.html">我的評價</a></div>
-            </div>
+            
             <div style="text-align: center;">
                 <a href="mailto:example@example.com"><img src="picture/customer-support.png" style="width: 40px;"> </a>
                 <div><a href="mailto:example@example.com">聯絡客服</a></div>
