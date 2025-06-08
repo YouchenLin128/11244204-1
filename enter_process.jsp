@@ -65,9 +65,7 @@
 
         if (rs.next()) {
             session.setAttribute("realname", rs.getString("realname"));
-            session.setAttribute("id", rs.getInt("id")); 
-            session.setAttribute("userId", rs.getInt("id"));  
-
+            session.setAttribute("id", rs.getInt("id"));
             session.setAttribute("member", email);
             response.sendRedirect("index.jsp");
         } else {
@@ -86,3 +84,4 @@
         try { if (conn != null) conn.close(); } catch (Exception e) {}
     }
 %>
+

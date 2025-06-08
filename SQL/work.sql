@@ -48,7 +48,6 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `cart_items`;
 
 CREATE TABLE `cart_items` (
-  `id` int NOT NULL AUTO_INCREMENT,
   `UserID` int NOT NULL,
   `ProductID` varchar(50) NOT NULL,
   `ProductName` varchar(255) DEFAULT NULL,
@@ -56,22 +55,15 @@ CREATE TABLE `cart_items` (
   `Quantity` int DEFAULT NULL,
   `Subtotal` int NOT NULL,
   `ProductImage` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cart_user` (`UserID`),
-  CONSTRAINT `fk_cart_user` FOREIGN KEY (`UserID`) REFERENCES `members`(`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
+  PRIMARY KEY (`ProductID`,`UserID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `cart_items`
 --
 
-LOCK TABLES `cart_items` WRITE;
-/*!40000 ALTER TABLE `cart_items` DISABLE KEYS */;
-INSERT INTO `cart_items` VALUES (1,'2','日式布丁',125,1,125,'products/picture2/日式布丁.jpg');
-/*!40000 ALTER TABLE `cart_items` ENABLE KEYS */;
-UNLOCK TABLES;
+
 
 --
 -- Table structure for table `members`
@@ -119,7 +111,7 @@ CREATE TABLE `order_items` (
   `ProductID` varchar(50) NOT NULL,
   `Quantity` int NOT NULL,
   `Price` decimal(10,2) NOT NULL,
-  `Subtotal` decimal(10,2) GENERATED ALWAYS AS ((`Quantity` * `Price`)) STORED,
+  `Subtotal` decimal(10,2) GENERATED ALWAYS AS (`Quantity` * `Price`) STORED,
   `ProductName` varchar(100) DEFAULT NULL,
   `ProductImage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`OrderItemID`),
@@ -135,9 +127,7 @@ CREATE TABLE `order_items` (
 LOCK TABLES `order_items` WRITE;
 /*!40000 ALTER TABLE `order_items` DISABLE KEYS */;
 INSERT INTO `order_items` (`OrderItemID`, `OrderID`, `ProductID`, `Quantity`, `Price`, `ProductName`, `ProductImage`) VALUES (1,2,'15',3,80.00,'栗子饅頭','products/picture2/栗子饅頭.jpg'),(2,3,'15',1,80.00,'栗子饅頭','products/picture2/栗子饅頭.jpg'),(3,4,'15',1,80.00,'栗子饅頭','products/picture2/栗子饅頭.jpg'),(4,4,'16',1,210.00,'抹茶蛋糕','products/picture2/抹茶蛋糕.jpg'),(5,5,'15',4,80.00,'栗子饅頭','products/picture2/栗子饅頭.jpg'),(6,5,'16',3,210.00,'抹茶蛋糕','products/picture2/抹茶蛋糕.jpg'),(7,6,'15',2,80.00,'栗子饅頭','products/picture2/栗子饅頭.jpg'),(8,7,'15',2,80.00,'栗子饅頭','products/picture2/栗子饅頭.jpg'),(9,8,'15',2,80.00,'栗子饅頭','products/picture2/栗子饅頭.jpg'),(10,9,'15',2,80.00,'栗子饅頭','products/picture2/栗子饅頭.jpg'),(11,10,'15',2,80.00,'栗子饅頭','products/picture2/栗子饅頭.jpg'),(12,11,'10',3,360.00,'聖誕派對生乳銅鑼燒','sidebar\\picture1\\聖誕派對生乳銅鑼燒1.jpg');
-/*!40000 ALTER TABLE `order_items` ENABLE KEYS */;
 UNLOCK TABLES;
-
 --
 -- Table structure for table `orders`
 --
@@ -150,6 +140,9 @@ CREATE TABLE `orders` (
   `id` int NOT NULL,
   `buy_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `finalTotal` int NOT NULL,
+  `RecipientName` varchar(100) DEFAULT NULL,
+  `RecipientPhone` varchar(45) DEFAULT NULL,
+  `RecipientAddress` varchar(225) DEFAULT NULL,
   PRIMARY KEY (`OrderID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -160,7 +153,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (2,1,'2025-06-01 13:33:00',240),(3,1,'2025-06-01 13:36:14',80),(4,1,'2025-06-01 13:37:06',290),(5,1,'2025-06-01 13:39:12',940),(6,1,'2025-06-01 13:57:06',160),(7,1,'2025-06-01 13:59:00',160),(8,1,'2025-06-01 14:17:33',160),(9,1,'2025-06-01 14:21:12',160),(10,1,'2025-06-01 14:22:07',160),(11,1,'2025-06-01 14:44:07',1070);
+INSERT INTO `orders` (`OrderID`, `id`, `buy_time`, `finalTotal`) VALUES (2,1,'2025-06-01 13:33:00',240),(3,1,'2025-06-01 13:36:14',80),(4,1,'2025-06-01 13:37:06',290),(5,1,'2025-06-01 13:39:12',940),(6,1,'2025-06-01 13:57:06',160),(7,1,'2025-06-01 13:59:00',160),(8,1,'2025-06-01 14:17:33',160),(9,1,'2025-06-01 14:21:12',160),(10,1,'2025-06-01 14:22:07',160),(11,1,'2025-06-01 14:44:07',1070);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
