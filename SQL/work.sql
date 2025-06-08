@@ -1,6 +1,5 @@
 CREATE DATABASE  IF NOT EXISTS `work` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `work`;
--- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
+USE `work`;-- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
 --
 -- Host: localhost    Database: work
 -- ------------------------------------------------------
@@ -47,9 +46,9 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `cart_items`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+
 CREATE TABLE `cart_items` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `UserID` int NOT NULL,
   `ProductID` varchar(50) NOT NULL,
   `ProductName` varchar(255) DEFAULT NULL,
@@ -57,8 +56,11 @@ CREATE TABLE `cart_items` (
   `Quantity` int DEFAULT NULL,
   `Subtotal` int NOT NULL,
   `ProductImage` varchar(255) NOT NULL,
-  PRIMARY KEY (`ProductID`,`UserID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id`),
+  KEY `fk_cart_user` (`UserID`),
+  CONSTRAINT `fk_cart_user` FOREIGN KEY (`UserID`) REFERENCES `members`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -145,7 +147,7 @@ DROP TABLE IF EXISTS `orders`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `orders` (
   `OrderID` int NOT NULL AUTO_INCREMENT,
-  `UserID` int NOT NULL,
+  `id` int NOT NULL,
   `buy_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `finalTotal` int NOT NULL,
   PRIMARY KEY (`OrderID`)
@@ -201,4 +203,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-08  1:32:45
+-- Dump completed on 2025-06-08  0:52:03
