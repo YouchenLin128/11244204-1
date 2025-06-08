@@ -117,7 +117,7 @@ CREATE TABLE `order_items` (
   `ProductID` varchar(50) NOT NULL,
   `Quantity` int NOT NULL,
   `Price` decimal(10,2) NOT NULL,
-  `Subtotal` decimal(10,2) NOT NULL,
+  `Subtotal` decimal(10,2) ALWAYS AS ((`Quantity` * `Price`)) STORED,
   `ProductName` varchar(100) DEFAULT NULL,
   `ProductImage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`OrderItemID`),
@@ -132,7 +132,7 @@ CREATE TABLE `order_items` (
 
 LOCK TABLES `order_items` WRITE;
 /*!40000 ALTER TABLE `order_items` DISABLE KEYS */;
-INSERT INTO `order_items` (`OrderItemID`, `OrderID`, `ProductID`, `Quantity`, `Price`, `ProductName`, `ProductImage`) VALUES (1,2,'15',3,80.00,'栗子饅頭','products/picture2/栗子饅頭.jpg');
+INSERT INTO `order_items` (`OrderItemID`, `OrderID`, `ProductID`, `Quantity`, `Price`, `ProductName`, `ProductImage`) VALUES (1,2,'15',3,80.00,'栗子饅頭','products/picture2/栗子饅頭.jpg'),(2,3,'15',1,80.00,'栗子饅頭','products/picture2/栗子饅頭.jpg'),(3,4,'15',1,80.00,'栗子饅頭','products/picture2/栗子饅頭.jpg'),(4,4,'16',1,210.00,'抹茶蛋糕','products/picture2/抹茶蛋糕.jpg'),(5,5,'15',4,80.00,'栗子饅頭','products/picture2/栗子饅頭.jpg'),(6,5,'16',3,210.00,'抹茶蛋糕','products/picture2/抹茶蛋糕.jpg'),(7,6,'15',2,80.00,'栗子饅頭','products/picture2/栗子饅頭.jpg'),(8,7,'15',2,80.00,'栗子饅頭','products/picture2/栗子饅頭.jpg'),(9,8,'15',2,80.00,'栗子饅頭','products/picture2/栗子饅頭.jpg'),(10,9,'15',2,80.00,'栗子饅頭','products/picture2/栗子饅頭.jpg'),(11,10,'15',2,80.00,'栗子饅頭','products/picture2/栗子饅頭.jpg'),(12,11,'10',3,360.00,'聖誕派對生乳銅鑼燒','sidebar\\picture1\\聖誕派對生乳銅鑼燒1.jpg');
 UNLOCK TABLES;
 --
 -- Table structure for table `orders`
