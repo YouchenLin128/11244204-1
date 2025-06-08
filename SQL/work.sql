@@ -65,11 +65,7 @@ CREATE TABLE `cart_items` (
 -- Dumping data for table `cart_items`
 --
 
-LOCK TABLES `cart_items` WRITE;
-/*!40000 ALTER TABLE `cart_items` DISABLE KEYS */;
-INSERT INTO `cart_items` VALUES (1,'2','日式布丁',125,1,125,'products/picture2/日式布丁.jpg');
-/*!40000 ALTER TABLE `cart_items` ENABLE KEYS */;
-UNLOCK TABLES;
+
 
 --
 -- Table structure for table `members`
