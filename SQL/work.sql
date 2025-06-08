@@ -117,7 +117,7 @@ CREATE TABLE `order_items` (
   `ProductID` varchar(50) NOT NULL,
   `Quantity` int NOT NULL,
   `Price` decimal(10,2) NOT NULL,
-  `Subtotal` decimal(10,2) ALWAYS AS ((`Quantity` * `Price`)) STORED,
+  `Subtotal` decimal(10,2) GENERATED ALWAYS AS (`Quantity` * `Price`) STORED,
   `ProductName` varchar(100) DEFAULT NULL,
   `ProductImage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`OrderItemID`),
