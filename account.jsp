@@ -48,19 +48,7 @@
                 <p style="margin: 0; color: gray;">會員編號: <%= memberID %></p>
             </div>
         </div>
-        <!-- 點數與折價券資訊（可先寫死測試） -->
-        <div style="display: flex; gap: 20px; align-items: center;">
-            <div style="text-align: center;border: 1px solid#f3e8d6;border-radius: 50px;background-color:#f3e8d6;">
-                <img src="picture/coin.png" width="50px" alt="Exclamation Icon">
-                <p>我的點數</p>
-                <p style="color: #5e4f45;">537點</p>
-            </div>
-            <div style="text-align: center;border: 1px solid#f3e8d6;border-radius: 50px;background-color:#f3e8d6;">
-                <img src="picture/coupons.png" width="50px" alt="Exclamation Icon">
-                <p>折價券</p>
-                <p style="color: #5e4f45;">537張</p>
-            </div>
-        </div>
+        
     </section>
 
     <!-- 其他會員功能按鈕（資料、訂單、評價...） -->
