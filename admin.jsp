@@ -112,7 +112,56 @@
             }
         %>
     </table>
+    
 </section>
+<!-- 新增商品功能 -->
+<h2>新增商品</h2>
+<form action="addProduct.jsp" method="post">
+    商品名稱：<input type="text" name="ProductName" required><br>
+    類別ID：<input type="number" name="CategoryID" required><br>
+    價格：<input type="number" name="Price" required><br>
+    敘述：<input type="text" name="Description"><br>
+    詳細內容1：<input type="text" name="Content1"><br>
+    詳細內容2：<input type="text" name="Content2"><br>
+    庫存數量：<input type="number" name="Stock" required><br>
+    圖片連結：<input type="text" name="ProductImage"><br>
+    圖片檔名：<input type="text" name="PictureName"><br>
+    <input type="submit" value="上架商品">
+</form>
+
+<!-- 下架商品功能 -->
+<h2>下架商品（庫存歸零）</h2>
+<form action="removeProduct.jsp" method="post">
+    請選擇要下架的商品：
+    <select name="ProductID">
+        <%
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/shop?serverTimezone=UTC",
+                    "root", "1234"); 
+
+                String sql = "SELECT ProductID, ProductName FROM product WHERE Stock > 0";
+                pstmt = conn.prepareStatement(sql);
+                rs = pstmt.executeQuery();
+                while (rs.next()) {
+        %>
+                    <option value="<%= rs.getInt("ProductID") %>">
+                        <%= rs.getString("ProductName") %>
+                    </option>
+        <%
+                }
+            } catch(Exception e) {
+                out.println("錯誤：" + e.getMessage());
+            } finally {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            }
+        %>
+    </select>
+    <input type="submit" value="下架商品">
+</form>
 
 <footer>
     <p>© 2024 月見甜舖 | 管理系統</p>
